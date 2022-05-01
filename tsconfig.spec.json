@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "types": ["jasmine", "node"]
+  },
+  "include": ["src", "test/**/*.spec.ts", "test.ts"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,53 @@
+{
+  "name": "freeathome-local-api-client",
+  "version": "0.1.0-pre001",
+  "description": "A client library for the Busch & Jäger free@home local API implemented in TypeScript",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pgerke/freeathome-local-api-client.git"
+  },
+  "keywords": [
+    "freeathome",
+    "api-client",
+    "typescript"
+  ],
+  "author": {
+    "email": "info@philipgerke.com",
+    "name": "Philip Gerke",
+    "url": "https://www.philipgerke.com"
+  },
+  "homepage": "https://github.com/pgerke/freeathome-local-api-client#readme",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pgerke/freeathome-local-api-client/issues"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node --project ./tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
+    "test:coverage": "nyc npm run test",
+    "lint": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@types/jasmine": "^4.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "jasmine": "^4.1.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "nyc": "^15.1.0",
+    "prettier": "^2.6.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  }
+}
