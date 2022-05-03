@@ -1,6 +1,6 @@
 # freeathome-local-api-client
 
-A client library for the Busch & Jäger free@home local API implemented in TypeScript
+A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript
 
 ## Features
 
@@ -33,6 +33,10 @@ While creating a bug report, please make it easy for me to fix it by giving us a
 ## I have a feature request, what do I do?
 
 Please create a [GitHub issue](https://github.com/pgerke/freeathome-local-api-client/issues) or drop me an [email](mailto:info@philipgerke.com)
+
+## Non-Affiliation Disclaimer
+
+This library is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by Busch-Jaeger Elektro GmbH or ABB Asea Brown Boveri Ltd or . All product and company names are the registered trademarks of their original owners. The use of any trade name or trademark is for identification and reference purposes only and does not imply any association with the trademark holder of their product brand.
 
 ## License
 

@@ -1,7 +1,7 @@
 {
   "name": "freeathome-local-api-client",
-  "version": "0.1.0-pre001",
-  "description": "A client library for the Busch & Jäger free@home local API implemented in TypeScript",
+  "version": "0.1.0-pre",
+  "description": "A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pgerke/freeathome-local-api-client.git"
@@ -32,9 +32,15 @@
     "test:coverage": "nyc npm run test",
     "lint": "eslint . --fix"
   },
+  "dependencies": {
+    "rxjs": "^7.5.5",
+    "ts-interface-checker": "^1.0.2",
+    "ws": "^8.5.0"
+  },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/jasmine": "^4.0.3",
+    "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",
@@ -47,6 +53,7 @@
     "jasmine-spec-reporter": "^7.0.0",
     "nyc": "^15.1.0",
     "prettier": "^2.6.2",
+    "ts-interface-builder": "^0.3.3",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   }

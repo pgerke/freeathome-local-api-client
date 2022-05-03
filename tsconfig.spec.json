@@ -4,6 +4,6 @@
     "module": "CommonJS",
     "types": ["jasmine", "node"]
   },
-  "include": ["src", "test/**/*.spec.ts", "test.ts"],
+  "include": ["src", "test/**/*.ts", "test.ts"],
   "exclude": ["node_modules", "dist"]
 }
