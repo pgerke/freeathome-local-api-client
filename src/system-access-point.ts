@@ -1,5 +1,6 @@
 import { Observable, Subject } from "rxjs";
 import { ClientOptions, RawData, WebSocket } from "ws";
+import { isWebSocketMessage } from "./model/validator";
 import { WebSocketMessage } from "./model";
 
 /**
@@ -8,13 +9,16 @@ import { WebSocketMessage } from "./model";
  * @class
  */
 export class SystemAccessPoint {
-  private readonly basicAuthKey: string;
-  private readonly hostName: string;
+  /** The basic authentication key used for requests. */
+  public readonly basicAuthKey: string;
+  /** The host name of the system access point. */
+  public readonly hostName: string;
   /** Determines whether requests to the system access point will use TLS. */
   public readonly tlsEnabled: boolean;
   private webSocket?: WebSocket;
   private readonly webSocketMessageSubject = new Subject<WebSocketMessage>();
-  private verifyCertificate: boolean;
+  /** Determines whether the TLS certificate will be verified. */
+  public readonly certificateVerification: boolean;
 
   /**
    * Constructs a new SystemAccessPoint instance
@@ -24,7 +28,7 @@ export class SystemAccessPoint {
     userName: string,
     password: string,
     tlsEnabled = true,
-    verifyCertificate = true
+    certificateVerification = true
   ) {
     // Create Basic Authentication key
     this.basicAuthKey = Buffer.from(`${userName}:${password}`, "utf8").toString(
@@ -32,10 +36,12 @@ export class SystemAccessPoint {
     );
     this.hostName = hostName;
     this.tlsEnabled = tlsEnabled;
-    this.verifyCertificate = verifyCertificate;
-    if (!verifyCertificate) {
+    this.certificateVerification = certificateVerification;
+
+    // Disabling certificate verification is discouraged, issue a warning
+    if (tlsEnabled && !certificateVerification) {
       console.warn(
-        "TLS Certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
+        "TLS certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
       );
     }
   }
@@ -58,34 +64,30 @@ export class SystemAccessPoint {
       this.hostName
     }/fhapi/v1/api/ws`;
     const options: ClientOptions = {
-      rejectUnauthorized: this.verifyCertificate,
+      rejectUnauthorized: this.tlsEnabled && this.certificateVerification,
       headers: {
         Authorization: `Basic ${this.basicAuthKey}`,
       },
     };
     const webSocket = new WebSocket(url, options);
-    webSocket.on("open", () => {
-      console.log("Connection opened");
-    });
+    webSocket.on("error", (error: Error) =>
+      console.error("Error received", error)
+    );
+    webSocket.on("ping", (data: Buffer) =>
+      console.debug("Ping received", data.toString("ascii"))
+    );
+    webSocket.on("pong", (data: Buffer) =>
+      console.debug("Pong received", data.toString("ascii"))
+    );
+    webSocket.on("unexpected-response", () =>
+      console.error("Unexpected response received")
+    );
+    webSocket.on("upgrade", () => console.debug("Upgrade request received"));
+    webSocket.on("open", () => console.log("Connection opened"));
     webSocket.on("close", () => console.log("Connection closed"));
-    webSocket.on("message", (data: RawData, isBinary: boolean) => {
-      if (isBinary) {
-        console.log("--- Binary Data --- ");
-        return;
-      }
-
-      const serialized = data.toString();
-      const message = JSON.parse(serialized) as WebSocketMessage;
-      if (!message) {
-        console.error(
-          "Web Socket Message could not be deserialized!",
-          serialized
-        );
-        return;
-      }
-      this.webSocketMessageSubject.next(message);
-    });
-
+    webSocket.on("message", (data: RawData, isBinary: boolean) =>
+      this.processWebSocketMessage(data, isBinary)
+    );
     return webSocket;
   }
 
@@ -121,4 +123,30 @@ export class SystemAccessPoint {
     return this.webSocketMessageSubject.asObservable();
   }
   // public setDatapoint(sysApUuid, deviceSerial, channel, dataPoint) {}
+
+  private processWebSocketMessage(data: RawData, isBinary: boolean): void {
+    // Do not process binary messages
+    if (isBinary) {
+      console.warn(
+        "Binary message received. Binary messages are not processed."
+      );
+      return;
+    }
+
+    console.debug("Message received");
+    /*
+     * Deserialize the message.
+     * The message is expected to be deserializable as a web socket message.
+     * If that is not the case, that's an error case.
+     */
+    const serialized = data.toString();
+    const message: unknown = JSON.parse(serialized);
+
+    if (isWebSocketMessage(message)) {
+      this.webSocketMessageSubject.next(message);
+      return;
+    }
+
+    console.error("Received message has an unexpected type!", serialized);
+  }
 }

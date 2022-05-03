@@ -9,6 +9,7 @@
     "sourceMap": true,
     "strict": true,
     "alwaysStrict": true,
+    "experimentalDecorators": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
