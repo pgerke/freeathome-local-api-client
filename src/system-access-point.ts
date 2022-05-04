@@ -1,7 +1,7 @@
 import { Observable, Subject } from "rxjs";
 import { ClientOptions, RawData, WebSocket } from "ws";
-import { isWebSocketMessage } from "./model/validator";
-import { WebSocketMessage } from "./model";
+import { isConfiguration, isWebSocketMessage } from "./model/validator";
+import { Configuration, WebSocketMessage } from "./model";
 
 /**
  * The class representing a System Access Point.
@@ -109,7 +109,52 @@ export class SystemAccessPoint {
     }
   }
 
-  // public getConfiguration() {}
+  public async getConfiguration(): Promise<Configuration> {
+    // Set up request info
+    const info: RequestInfo = `${this.tlsEnabled ? "https" : "http"}://${
+      this.hostName
+    }/fhapi/v1/api/rest/configuration`;
+
+    // Set up request init
+    const init: RequestInit = {
+      method: "GET",
+      headers: {
+        Authorization: `Basic ${this.basicAuthKey}`,
+      },
+    };
+
+    // Get responser from system access point
+    const response: Response = await fetch(info, init);
+    let body: unknown;
+    let message: string;
+
+    // Process response
+    switch (response.status) {
+      case 200:
+        body = await response.json();
+        if (!isConfiguration(body)) {
+          message = "Authentication information is missing or invalid.";
+          console.error(message);
+          throw new Error(message);
+        }
+
+        return body;
+      case 401:
+        message = "Authentication information is missing or invalid.";
+        console.error(message);
+        throw new Error(message);
+      case 502:
+        message = await response.text();
+        console.error(message);
+        throw new Error(message);
+      default:
+        message = `Received HTTP ${
+          response.status
+        } status code unexpectedly: ${await response.text()}`;
+        console.error(message);
+        throw new Error(message);
+    }
+  }
   // public getDeviceList() {}
   // public getDevice(sysApUuid, deviceSerial) {}
   // public getDatapoint(sysApUuid, deviceSerial, channel, dataPoint) {}

@@ -1,6 +1,6 @@
 {
   "name": "freeathome-local-api-client",
-  "version": "0.1.0-pre",
+  "version": "0.2.0-pre",
   "description": "A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript",
   "repository": {
     "type": "git",
