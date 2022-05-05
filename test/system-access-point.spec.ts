@@ -3,7 +3,6 @@ import { originalTimeout } from "../test";
 import { RawData, WebSocket } from "ws";
 import { WebSocketMessage } from "../src/model";
 import { Subject } from "rxjs";
-import fetch from "node-fetch";
 
 describe("System Access Point", () => {
   afterAll(() => {
@@ -202,19 +201,5 @@ describe("System Access Point", () => {
       Buffer.from(JSON.stringify(message), "ascii"),
       false
     );
-  });
-
-  fit("should get configuration", async () => {
-    window.fetch = fetch;
-    const sysAp = new SystemAccessPoint(
-      "sysap",
-      "0dc87fa4-9f60-42e8-8b51-09f583abfdb6",
-      "MS5free@home",
-      true,
-      false
-    );
-    const config = await sysAp.getConfiguration();
-    console.log(config);
-    expect(config).toBeDefined();
   });
 });

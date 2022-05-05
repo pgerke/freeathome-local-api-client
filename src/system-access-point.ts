@@ -109,6 +109,10 @@ export class SystemAccessPoint {
     }
   }
 
+  /**
+   * Gets the configuration from the system access point
+   * @returns The system access point @see Configuration
+   */
   public async getConfiguration(): Promise<Configuration> {
     // Set up request info
     const info: RequestInfo = `${this.tlsEnabled ? "https" : "http"}://${
