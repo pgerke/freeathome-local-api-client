@@ -1,7 +1,17 @@
 import { Observable, Subject } from "rxjs";
 import { ClientOptions, RawData, WebSocket } from "ws";
-import { isConfiguration, isWebSocketMessage } from "./model/validator";
-import { Configuration, WebSocketMessage } from "./model";
+import {
+  isConfiguration,
+  isDeviceList,
+  isDeviceResponse,
+  isWebSocketMessage,
+} from "./model/validator";
+import {
+  Configuration,
+  DeviceList,
+  DeviceResponse,
+  WebSocketMessage,
+} from "./model";
 
 /**
  * The class representing a System Access Point.
@@ -111,7 +121,7 @@ export class SystemAccessPoint {
 
   /**
    * Gets the configuration from the system access point
-   * @returns The system access point @see Configuration
+   * @returns The @see Configuration
    */
   public async getConfiguration(): Promise<Configuration> {
     // Set up request info
@@ -127,7 +137,7 @@ export class SystemAccessPoint {
       },
     };
 
-    // Get responser from system access point
+    // Get response from system access point
     const response: Response = await fetch(info, init);
     let body: unknown;
     let message: string;
@@ -137,8 +147,8 @@ export class SystemAccessPoint {
       case 200:
         body = await response.json();
         if (!isConfiguration(body)) {
-          message = "Authentication information is missing or invalid.";
-          console.error(message);
+          message = "Received message has an unexpected type!";
+          console.error(message, body);
           throw new Error(message);
         }
 
@@ -159,8 +169,112 @@ export class SystemAccessPoint {
         throw new Error(message);
     }
   }
-  // public getDeviceList() {}
-  // public getDevice(sysApUuid, deviceSerial) {}
+
+  /**
+   * Gets the device list from the system access point.
+   * @returns The @see DeviceList
+   */
+  public async getDeviceList(): Promise<DeviceList> {
+    // Set up request info
+    const info: RequestInfo = `${this.tlsEnabled ? "https" : "http"}://${
+      this.hostName
+    }/fhapi/v1/api/rest/devicelist`;
+
+    // Set up request init
+    const init: RequestInit = {
+      method: "GET",
+      headers: {
+        Authorization: `Basic ${this.basicAuthKey}`,
+      },
+    };
+
+    // Get response from system access point
+    const response: Response = await fetch(info, init);
+    let body: unknown;
+    let message: string;
+
+    // Process response
+    switch (response.status) {
+      case 200:
+        body = await response.json();
+        if (!isDeviceList(body)) {
+          message = "Received message has an unexpected type!";
+          console.error(message, body);
+          throw new Error(message);
+        }
+
+        return body;
+      case 401:
+        message = "Authentication information is missing or invalid.";
+        console.error(message);
+        throw new Error(message);
+      case 502:
+        message = await response.text();
+        console.error(message);
+        throw new Error(message);
+      default:
+        message = `Received HTTP ${
+          response.status
+        } status code unexpectedly: ${await response.text()}`;
+        console.error(message);
+        throw new Error(message);
+    }
+  }
+
+  /**
+   * Gets the specified device from the system access point
+   * @param sysApUuid The UUID identifying the system access point
+   * @param deviceSerial The device serial number
+   */
+  public async getDevice(
+    sysApUuid: string,
+    deviceSerial: string
+  ): Promise<DeviceResponse> {
+    // Set up request info
+    const info: RequestInfo = `${this.tlsEnabled ? "https" : "http"}://${
+      this.hostName
+    }/fhapi/v1/api/rest/device/${sysApUuid}/${deviceSerial}`;
+
+    // Set up request init
+    const init: RequestInit = {
+      method: "GET",
+      headers: {
+        Authorization: `Basic ${this.basicAuthKey}`,
+      },
+    };
+
+    // Get response from system access point
+    const response: Response = await fetch(info, init);
+    let body: unknown;
+    let message: string;
+
+    // Process response
+    switch (response.status) {
+      case 200:
+        body = await response.json();
+        if (!isDeviceResponse(body)) {
+          message = "Received message has an unexpected type!";
+          console.error(message, body);
+          throw new Error(message);
+        }
+
+        return body;
+      case 401:
+        message = "Authentication information is missing or invalid.";
+        console.error(message);
+        throw new Error(message);
+      case 502:
+        message = await response.text();
+        console.error(message);
+        throw new Error(message);
+      default:
+        message = `Received HTTP ${
+          response.status
+        } status code unexpectedly: ${await response.text()}`;
+        console.error(message);
+        throw new Error(message);
+    }
+  }
   // public getDatapoint(sysApUuid, deviceSerial, channel, dataPoint) {}
 
   /**
