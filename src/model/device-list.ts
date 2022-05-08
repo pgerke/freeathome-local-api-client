@@ -4,7 +4,5 @@
  * @interface
  */
 export interface DeviceList {
-  [key: string]: {
-    deviceSerialNumber: Array<string>;
-  };
+  [key: string]: Array<string>;
 }

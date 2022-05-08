@@ -7,17 +7,15 @@ import { ScenesTriggered } from "./scenes-triggered";
  * @interface
  */
 export interface WebSocketMessage {
-  systemAccessPoint: {
-    [key: string]: {
-      datapoints: {
-        [key: string]: string;
-      };
-      devices: {
-        [key: string]: Devices;
-      };
-      devicesAdded: Array<string>;
-      devicesRemoved: Array<string>;
-      scenesTriggeres: ScenesTriggered;
+  [key: string]: {
+    datapoints: {
+      [key: string]: string;
     };
+    devices: {
+      [key: string]: Devices;
+    };
+    devicesAdded: Array<string>;
+    devicesRemoved: Array<string>;
+    scenesTriggeres: ScenesTriggered;
   };
 }
