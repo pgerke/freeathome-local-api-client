@@ -29,7 +29,7 @@
     "package.json"
   ],
   "scripts": {
-    "clean": "rimraf dist && rimraf out-tsc",
+    "clean": "rimraf dist",
     "build": "npm run clean && webpack --node-env=production --config webpack.config.js",
     "test": "ts-node --project ./tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
     "test:coverage": "nyc npm run test",
