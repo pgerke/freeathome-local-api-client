@@ -16,6 +16,6 @@ export interface WebSocketMessage {
     };
     devicesAdded: Array<string>;
     devicesRemoved: Array<string>;
-    scenesTriggeres: ScenesTriggered;
+    scenesTriggered: ScenesTriggered;
   };
 }

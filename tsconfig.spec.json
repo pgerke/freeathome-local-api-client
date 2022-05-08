@@ -4,6 +4,11 @@
     "module": "CommonJS",
     "types": ["jasmine", "node"]
   },
+  "ts-node": {
+    "moduleTypes": {
+      "**/*": "cjs"
+    }
+  },
   "include": ["src", "test/**/*.ts", "test.ts"],
   "exclude": ["node_modules", "dist"]
 }
