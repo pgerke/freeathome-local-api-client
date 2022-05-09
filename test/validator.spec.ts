@@ -10,8 +10,10 @@ import {
   isSetDataPointResponse,
   isWebSocketMessage,
   SetDataPointResponse,
+  VirtualDeviceResponse,
   WebSocketMessage,
 } from "../src/model";
+import { isVirtualDeviceResponse } from "../src/model/validator";
 import { originalTimeout } from "../test";
 
 describe("Validator", () => {
@@ -229,6 +231,50 @@ describe("Validator", () => {
       },
     };
     expect(isSetDataPointResponse(obj, true)).toBeFalse();
+    expect(spy).toHaveBeenCalledWith(
+      "Object validation failed!",
+      jasmine.anything()
+    );
+  });
+
+  it("should verify a valid virtual device response", () => {
+    const obj: VirtualDeviceResponse = {
+      "00000000-0000-0000-0000-000000000000": {
+        devices: {
+          abcd12345: {
+            serial: "6000D2CB27B2",
+          },
+        },
+      },
+    };
+    expect(isVirtualDeviceResponse(obj, true)).toBeTrue();
+  });
+
+  it("should fail verification for an invalid virtual device response", () => {
+    const obj = {
+      "00000000-0000-0000-0000-000000000000": {
+        device: {
+          abcd12345: {
+            serial: "6000D2CB27B2",
+          },
+        },
+      },
+    };
+    expect(isVirtualDeviceResponse(obj)).toBeFalse();
+  });
+
+  it("should throw an error during verification for an invalid virtual device response in verbose mode", () => {
+    const spy = spyOn(console, "error");
+    const obj = {
+      "00000000-0000-0000-0000-000000000000": {
+        device: {
+          abcd12345: {
+            serial: "6000D2CB27B2",
+          },
+        },
+      },
+    };
+    expect(isVirtualDeviceResponse(obj, true)).toBeFalse();
     expect(spy).toHaveBeenCalledWith(
       "Object validation failed!",
       jasmine.anything()

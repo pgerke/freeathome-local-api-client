@@ -98,7 +98,7 @@ export class SystemAccessPoint {
     return await this.processRestResponse(response, isVirtualDeviceResponse);
   }
 
-  private createWebSocket(certificateVerification = true): WebSocket {
+  private createWebSocket(certificateVerification: boolean): WebSocket {
     // Disabling certificate verification is discouraged, issue a warning
     if (this.tlsEnabled && !certificateVerification) {
       console.warn(
@@ -285,7 +285,7 @@ export class SystemAccessPoint {
 
   private async processRestResponse<TResponse>(
     response: Response,
-    typeGuard?: (obj: unknown, verbose: boolean) => obj is TResponse
+    typeGuard: (obj: unknown, verbose: boolean) => obj is TResponse
   ): Promise<TResponse> {
     let body: unknown;
     let message: string;
@@ -294,10 +294,6 @@ export class SystemAccessPoint {
     switch (response.status) {
       case 200:
         body = await response.json();
-        if (!typeGuard) {
-          console.warn("Message integrity is not protected by a type guard.");
-          return body as TResponse;
-        }
         if (!typeGuard(body, this.verboseErrors)) {
           message = "Received message has an unexpected type!";
           console.error(message, body);
