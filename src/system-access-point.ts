@@ -13,7 +13,10 @@ import {
   isConfiguration,
   SetDataPointResponse,
   WebSocketMessage,
+  VirtualDevice,
+  VirtualDeviceResponse,
 } from "./model";
+import { isVirtualDeviceResponse } from "./model/validator";
 
 type HttpRequestMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
@@ -71,6 +74,28 @@ export class SystemAccessPoint {
     }
 
     this.webSocket = this.createWebSocket(certificateVerification);
+  }
+
+  /**
+   * Creates a new virtual device.
+   * @param sysApUuid The UUID identifying the system access point
+   * @param deviceSerial The serial number to be assigned to the device.
+   * @param virtualDevice The virtual device to be created.
+   */
+  public async createVirtualDevice(
+    sysApUuid: string,
+    deviceSerial: string,
+    virtualDevice: VirtualDevice
+  ): Promise<VirtualDeviceResponse> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "PUT",
+      `virtualdevice/${sysApUuid}/${deviceSerial}`,
+      JSON.stringify(virtualDevice)
+    );
+
+    // Process response
+    return await this.processRestResponse(response, isVirtualDeviceResponse);
   }
 
   private createWebSocket(certificateVerification = true): WebSocket {
