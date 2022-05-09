@@ -1,7 +1,24 @@
 import { Observable, Subject } from "rxjs";
 import { ClientOptions, RawData, WebSocket } from "ws";
-import { isWebSocketMessage } from "./model/validator";
-import { WebSocketMessage } from "./model";
+import {
+  Configuration,
+  DeviceList,
+  DeviceResponse,
+  GetDataPointResponse,
+  isDeviceList,
+  isDeviceResponse,
+  isWebSocketMessage,
+  isGetDataPointResponse,
+  isSetDataPointResponse,
+  isConfiguration,
+  SetDataPointResponse,
+  WebSocketMessage,
+  VirtualDevice,
+  VirtualDeviceResponse,
+} from "./model";
+import { isVirtualDeviceResponse } from "./model/validator";
+
+type HttpRequestMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
 /**
  * The class representing a System Access Point.
@@ -15,20 +32,26 @@ export class SystemAccessPoint {
   public readonly hostName: string;
   /** Determines whether requests to the system access point will use TLS. */
   public readonly tlsEnabled: boolean;
+  private verboseErrors: boolean;
   private webSocket?: WebSocket;
   private readonly webSocketMessageSubject = new Subject<WebSocketMessage>();
-  /** Determines whether the TLS certificate will be verified. */
-  public readonly certificateVerification: boolean;
 
   /**
    * Constructs a new SystemAccessPoint instance
+   *
+   * @constructor
+   * @param hostName The system access point host name.
+   * @param userName The user name that shall be used to authenticate with the system access point.
+   * @param password The password that shall be used to authenticate with the system access point.
+   * @param tlsEnabled Determines whether the communication with the system access point shall be protected by TLS. Defaults to true
+   * @param verboseErrors Determines whether verbose error messages shall be used, for example for message validation. Defaults to false.
    */
   constructor(
     hostName: string,
     userName: string,
     password: string,
     tlsEnabled = true,
-    certificateVerification = true
+    verboseErrors = false
   ) {
     // Create Basic Authentication key
     this.basicAuthKey = Buffer.from(`${userName}:${password}`, "utf8").toString(
@@ -36,35 +59,58 @@ export class SystemAccessPoint {
     );
     this.hostName = hostName;
     this.tlsEnabled = tlsEnabled;
-    this.certificateVerification = certificateVerification;
-
-    // Disabling certificate verification is discouraged, issue a warning
-    if (tlsEnabled && !certificateVerification) {
-      console.warn(
-        "TLS certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
-      );
-    }
+    this.verboseErrors = verboseErrors;
   }
 
   /**
    * Connects to the System Access Point web socket.
    *
    * @function
+   * @param certificateVerification Determines whether the TLS certificate presented by the server will be verified.
    */
-  public connectWebSocket(): void {
+  public connectWebSocket(certificateVerification = true): void {
     if (this.webSocket && this.webSocket.readyState === WebSocket.OPEN) {
       throw new Error("Web socket is already connected");
     }
 
-    this.webSocket = this.createWebSocket();
+    this.webSocket = this.createWebSocket(certificateVerification);
   }
 
-  private createWebSocket(): WebSocket {
+  /**
+   * Creates a new virtual device.
+   * @param sysApUuid The UUID identifying the system access point
+   * @param deviceSerial The serial number to be assigned to the device.
+   * @param virtualDevice The virtual device to be created.
+   */
+  public async createVirtualDevice(
+    sysApUuid: string,
+    deviceSerial: string,
+    virtualDevice: VirtualDevice
+  ): Promise<VirtualDeviceResponse> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "PUT",
+      `virtualdevice/${sysApUuid}/${deviceSerial}`,
+      JSON.stringify(virtualDevice)
+    );
+
+    // Process response
+    return await this.processRestResponse(response, isVirtualDeviceResponse);
+  }
+
+  private createWebSocket(certificateVerification: boolean): WebSocket {
+    // Disabling certificate verification is discouraged, issue a warning
+    if (this.tlsEnabled && !certificateVerification) {
+      console.warn(
+        "TLS certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
+      );
+    }
+
     const url = `${this.tlsEnabled ? "wss" : "ws"}://${
       this.hostName
     }/fhapi/v1/api/ws`;
     const options: ClientOptions = {
-      rejectUnauthorized: this.tlsEnabled && this.certificateVerification,
+      rejectUnauthorized: this.tlsEnabled && certificateVerification,
       headers: {
         Authorization: `Basic ${this.basicAuthKey}`,
       },
@@ -109,10 +155,75 @@ export class SystemAccessPoint {
     }
   }
 
-  // public getConfiguration() {}
-  // public getDeviceList() {}
-  // public getDevice(sysApUuid, deviceSerial) {}
-  // public getDatapoint(sysApUuid, deviceSerial, channel, dataPoint) {}
+  /**
+   * Gets the configuration from the system access point
+   * @returns The @see Configuration
+   */
+  public async getConfiguration(): Promise<Configuration> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "GET",
+      "configuration"
+    );
+
+    // Process response
+    return await this.processRestResponse(response, isConfiguration);
+  }
+
+  /**
+   * Gets the device list from the system access point.
+   * @returns The @see DeviceList
+   */
+  public async getDeviceList(): Promise<DeviceList> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest("GET", "devicelist");
+
+    // Process response
+    return await this.processRestResponse(response, isDeviceList);
+  }
+
+  /**
+   * Gets the specified device from the system access point
+   * @param sysApUuid The UUID identifying the system access point
+   * @param deviceSerial The device serial number
+   */
+  public async getDevice(
+    sysApUuid: string,
+    deviceSerial: string
+  ): Promise<DeviceResponse> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "GET",
+      `device/${sysApUuid}/${deviceSerial}`
+    );
+
+    // Process response
+    return await this.processRestResponse(response, isDeviceResponse);
+  }
+
+  /**
+   * Gets the specified data point from the system access point.
+   * @param sysApUuid The UUID idenfifying the system access point
+   * @param deviceSerial The device serial number
+   * @param channel The channel identifier
+   * @param dataPoint The datapoint identifier
+   * @returns The requested @see GetDataPointResponse
+   */
+  public async getDatapoint(
+    sysApUuid: string,
+    deviceSerial: string,
+    channel: string,
+    dataPoint: string
+  ): Promise<GetDataPointResponse> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "GET",
+      `datapoint/${sysApUuid}/${deviceSerial}.${channel}.${dataPoint}`
+    );
+
+    // Process response
+    return await this.processRestResponse(response, isGetDataPointResponse);
+  }
 
   /**
    * Gets the web socket messages.
@@ -122,7 +233,90 @@ export class SystemAccessPoint {
   public getWebSocketMessages(): Observable<WebSocketMessage> {
     return this.webSocketMessageSubject.asObservable();
   }
-  // public setDatapoint(sysApUuid, deviceSerial, channel, dataPoint) {}
+  /**
+   * Sets a new value for the specificed data point.
+   * @param sysApUuid The UUID idenfifying the system access point
+   * @param deviceSerial The device serial number
+   * @param channel The channel identifier
+   * @param dataPoint The datapoint identifier
+   * @param value The new value to be set
+   * @returns A @see SetDataPointResponse describing the result of the operation
+   */
+  public async setDatapoint(
+    sysApUuid: string,
+    deviceSerial: string,
+    channel: string,
+    dataPoint: string,
+    value: string
+  ): Promise<SetDataPointResponse> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "PUT",
+      `datapoint/${sysApUuid}/${deviceSerial}.${channel}.${dataPoint}`,
+      value
+    );
+
+    // Process response
+    return await this.processRestResponse(response, isSetDataPointResponse);
+  }
+
+  private async fetchDataViaRest(
+    method: HttpRequestMethod,
+    route: string,
+    body: BodyInit | null | undefined = undefined
+  ): Promise<Response> {
+    // Set up request info
+    const info: RequestInfo = `${this.tlsEnabled ? "https" : "http"}://${
+      this.hostName
+    }/fhapi/v1/api/rest/${route}`;
+
+    // Set up request init
+    const init: RequestInit = {
+      method: method,
+      headers: {
+        Authorization: `Basic ${this.basicAuthKey}`,
+      },
+      body: body,
+    };
+
+    // Get response from system access point
+    return await fetch(info, init);
+  }
+
+  private async processRestResponse<TResponse>(
+    response: Response,
+    typeGuard: (obj: unknown, verbose: boolean) => obj is TResponse
+  ): Promise<TResponse> {
+    let body: unknown;
+    let message: string;
+
+    // Process response
+    switch (response.status) {
+      case 200:
+        body = await response.json();
+        if (!typeGuard(body, this.verboseErrors)) {
+          message = "Received message has an unexpected type!";
+          console.error(message, body);
+          throw new Error(message);
+        }
+
+        return body;
+      case 401:
+        message = "Authentication information is missing or invalid.";
+        console.error(message);
+        throw new Error(message);
+      case 502:
+        message = await response.text();
+        console.error(message);
+        throw new Error(message);
+      default:
+        message = `Received HTTP ${
+          response.status
+        } status code unexpectedly: ${await response.text()}`;
+        console.error(message);
+        throw new Error(message);
+    }
+  }
 
   private processWebSocketMessage(data: RawData, isBinary: boolean): void {
     // Do not process binary messages
@@ -142,7 +336,7 @@ export class SystemAccessPoint {
     const serialized = data.toString();
     const message: unknown = JSON.parse(serialized);
 
-    if (isWebSocketMessage(message)) {
+    if (isWebSocketMessage(message, this.verboseErrors)) {
       this.webSocketMessageSubject.next(message);
       return;
     }

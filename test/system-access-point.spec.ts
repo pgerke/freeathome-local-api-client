@@ -1,33 +1,21 @@
 import { SystemAccessPoint } from "../src";
 import { originalTimeout } from "../test";
 import { RawData, WebSocket } from "ws";
-import { WebSocketMessage } from "../src/model";
+import {
+  Configuration,
+  DeviceResponse,
+  GetDataPointResponse,
+  SetDataPointResponse,
+  VirtualDeviceResponse,
+  VirtualDeviceType,
+  WebSocketMessage,
+} from "../src/model";
 import { Subject } from "rxjs";
 
 describe("System Access Point", () => {
   afterAll(() => {
     // Restore the default Jasmine timeout after the test suite.
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-  });
-
-  it("should warn if certificate verification is disabled", () => {
-    const spy = spyOn(console, "warn");
-    const sysAp = new SystemAccessPoint(
-      "ap",
-      "username",
-      "password",
-      true,
-      false
-    );
-    expect(spy).toHaveBeenCalledWith(
-      "TLS certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
-    );
-    expect(sysAp.hostName).toBe("ap");
-    expect(sysAp.basicAuthKey).toEqual(
-      Buffer.from("username:password", "utf8").toString("base64")
-    );
-    expect(sysAp.tlsEnabled).toBeTrue();
-    expect(sysAp.certificateVerification).toBeFalse();
   });
 
   it("should throw an error if the connection is requested and the web socket is already open", () => {
@@ -42,10 +30,25 @@ describe("System Access Point", () => {
 
   it("should create a new web socket instance on connect", () => {
     spyOn(WebSocket.prototype, "send");
+    const spy = spyOn(console, "warn");
     const sysAp = new SystemAccessPoint("ap", "username", "password");
     const instance = sysAp as unknown as { webSocket?: WebSocket };
     expect(instance.webSocket).toBeUndefined();
-    sysAp.connectWebSocket();
+    sysAp.connectWebSocket(true);
+    expect(spy).not.toHaveBeenCalled();
+    expect(instance.webSocket).toBeInstanceOf(WebSocket);
+  });
+
+  it("should warn if certificate verification is disabled", () => {
+    spyOn(WebSocket.prototype, "send");
+    const spy = spyOn(console, "warn");
+    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const instance = sysAp as unknown as { webSocket?: WebSocket };
+    expect(instance.webSocket).toBeUndefined();
+    sysAp.connectWebSocket(false);
+    expect(spy).toHaveBeenCalledWith(
+      "TLS certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
+    );
     expect(instance.webSocket).toBeInstanceOf(WebSocket);
   });
 
@@ -177,14 +180,12 @@ describe("System Access Point", () => {
     spyOn(WebSocket.prototype, "send");
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     const message: WebSocketMessage = {
-      systemAccessPoint: {
-        Test: {
-          datapoints: {},
-          devices: {},
-          devicesAdded: [],
-          devicesRemoved: [],
-          scenesTriggeres: {},
-        },
+      Test: {
+        datapoints: {},
+        devices: {},
+        devicesAdded: [],
+        devicesRemoved: [],
+        scenesTriggered: {},
       },
     };
     const instance = sysAp as unknown as {
@@ -201,5 +202,175 @@ describe("System Access Point", () => {
       Buffer.from(JSON.stringify(message), "ascii"),
       false
     );
+  });
+
+  it("should throw an error if received message fails to pass type guard", async () => {
+    const spy = spyOn(console, "error");
+    const obj = {
+      Test: {
+        key: "value",
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    try {
+      await sysAp.getDeviceList();
+      fail();
+    } catch (error) {
+      expect(error).toEqual(
+        new Error("Received message has an unexpected type!")
+      );
+    }
+    expect(spy).toHaveBeenCalledWith(
+      "Received message has an unexpected type!",
+      obj
+    );
+  });
+
+  it("should process unauthorized response", async () => {
+    const spy = spyOn(console, "error");
+    const response = { status: 401 } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    try {
+      await sysAp.getDeviceList();
+      fail();
+    } catch (error) {
+      expect(error).toEqual(
+        new Error("Authentication information is missing or invalid.")
+      );
+    }
+    expect(spy).toHaveBeenCalledWith(
+      "Authentication information is missing or invalid."
+    );
+  });
+
+  it("should process bad gateway response", async () => {
+    const spy = spyOn(console, "error");
+    const response = {
+      status: 502,
+      text: () => Promise.resolve("Test Error"),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    try {
+      await sysAp.getDeviceList();
+      fail();
+    } catch (error) {
+      expect(error).toEqual(new Error("Test Error"));
+    }
+    expect(spy).toHaveBeenCalledWith("Test Error");
+  });
+
+  it("should process unexpected error response", async () => {
+    const spy = spyOn(console, "error");
+    const response = {
+      status: 403,
+      text: () => Promise.resolve("Test Error"),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    try {
+      await sysAp.getDeviceList();
+      fail();
+    } catch (error) {
+      expect(error).toEqual(
+        new Error("Received HTTP 403 status code unexpectedly: Test Error")
+      );
+    }
+    expect(spy).toHaveBeenCalledWith(
+      "Received HTTP 403 status code unexpectedly: Test Error"
+    );
+  });
+
+  it("should create virtual device via REST endpoint", async () => {
+    const obj: VirtualDeviceResponse = {
+      "00000000-0000-0000-0000-000000000000": {
+        devices: {
+          abcd12345: {
+            serial: "6000D2CB27B2",
+          },
+        },
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    expect(
+      await sysAp.createVirtualDevice("", "", { type: VirtualDeviceType.RTC })
+    ).toEqual(obj);
+  });
+
+  it("should get Configuration from REST endpoint", async () => {
+    const obj: Configuration = {
+      Test: {
+        devices: {},
+        floorplan: {
+          floors: {},
+        },
+        sysapName: "Test System Access Point",
+        users: {},
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    expect(await sysAp.getConfiguration()).toEqual(obj);
+  });
+
+  it("should get Device from REST endpoint", async () => {
+    const obj: DeviceResponse = {
+      Test: {
+        devices: {},
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    expect(await sysAp.getDevice("", "")).toEqual(obj);
+  });
+
+  it("should get data point from REST endpoint", async () => {
+    const obj: GetDataPointResponse = {
+      Test: {
+        values: ["Value 1", "Value 2"],
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    expect(await sysAp.getDatapoint("", "", "", "")).toEqual(obj);
+  });
+
+  it("should set data point via REST endpoint", async () => {
+    const obj: SetDataPointResponse = {
+      Test: {
+        key1: "Value 1",
+        key2: "Value 2",
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    expect(await sysAp.setDatapoint("", "", "", "", "")).toEqual(obj);
   });
 });
