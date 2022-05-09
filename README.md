@@ -1,19 +1,31 @@
 # freeathome-local-api-client
 
-A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript
+A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript.
+
+## Installation
+
+You can install the package from npmjs.com:
+
+```
+npm install --save freeathome-local-api-client
+```
 
 ## Features
 
-TBD
+- Connect to your B+J System Access Point 2.0 and control it using the local API.
+- The complete local API is supported!
+- Read the configuration, the device list and any datapoint offered by any device connected to the system
+- Control your devices by setting new values for data points
+- 100% covered by automated unit tests
 
 ## Usage Requirements
 
-- A free@home system access point running firmware > v3.0
+- A free@home System Access Point 2.0 running firmware > v3.0
 - Local API has to be enabled for the user account to be used
 
 ## Documentation
 
-TBD
+A sample project illustrating the use of the library can be found at https://github.com/pgerke/freeathome-local-api-sample.
 
 ## I found a bug, what do I do?
 
@@ -32,7 +44,7 @@ While creating a bug report, please make it easy for me to fix it by giving us a
 
 ## I have a feature request, what do I do?
 
-Please create a [GitHub issue](https://github.com/pgerke/freeathome-local-api-client/issues) or drop me an [email](mailto:info@philipgerke.com)
+Please create a [GitHub issue](https://github.com/pgerke/freeathome-local-api-client/issues) or drop me an [email](mailto:info@philipgerke.com)!
 
 ## Non-Affiliation Disclaimer
 
