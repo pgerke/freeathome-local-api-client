@@ -1,0 +1,19 @@
+{
+  "opts": {
+    "destination": "./doc/",
+    "recurse": true,
+    "template": "node_modules/better-docs"
+  },
+  "plugins": ["node_modules/better-docs/typescript"],
+  "recurseDepth": 10,
+  "sourceType": "module",
+  "source": {
+    "include": ["src", "package.json"],
+    "includePattern": "\\.(jsx|js|ts|tsx|json)$",
+    "excludePattern": "node_modules"
+  },
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  }
+}

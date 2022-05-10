@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> model/validator.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>model/validator.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {
+  ChannelTypeSuite,
+  DeviceTypeSuite,
+  DevicesTypeSuite,
+  InOutPutTypeSuite,
+  ScenesTriggeredTypeSuite,
+  WebSocketMessageTypeSuite,
+  DeviceListTypeSuite,
+  SetDataPointResponseTypeSuite,
+  GetDataPointResponseTypeSuite,
+  ConfigurationTypeSuite,
+  FloorsTypeSuite,
+  RoomsTypeSuite,
+  SysApTypeSuite,
+  UsersTypeSuite,
+  ErrorTypeSuite,
+  DeviceResponseTypeSuite,
+  VirtualDeviceResponseTypeSuite,
+} from "./validation";
+import { Checker, createCheckers } from "ts-interface-checker";
+import { WebSocketMessage as Message } from "./websocket-message";
+import { Configuration as Config } from "./configuration";
+import { DeviceList as DevList } from "./device-list";
+import { DeviceResponse as DevResponse } from "./device-response";
+import { GetDataPointResponse as GetResponse } from "./get-data-point-response";
+import { SetDataPointResponse as SetResponse } from "./set-data-point-response";
+import { VirtualDeviceResponse as VDeviceResponse } from "./virtual-device-response";
+
+const { Configuration } = createCheckers(
+  ConfigurationTypeSuite,
+  DevicesTypeSuite,
+  DeviceTypeSuite,
+  ChannelTypeSuite,
+  InOutPutTypeSuite,
+  FloorsTypeSuite,
+  RoomsTypeSuite,
+  SysApTypeSuite,
+  UsersTypeSuite,
+  ErrorTypeSuite
+);
+
+const { DeviceList } = createCheckers(DeviceListTypeSuite);
+
+const { DeviceResponse } = createCheckers(
+  DeviceResponseTypeSuite,
+  DevicesTypeSuite,
+  DeviceTypeSuite,
+  ChannelTypeSuite,
+  InOutPutTypeSuite
+);
+
+const { GetDataPointResponse } = createCheckers(GetDataPointResponseTypeSuite);
+
+const { SetDataPointResponse } = createCheckers(SetDataPointResponseTypeSuite);
+
+const { VirtualDeviceResponse } = createCheckers(
+  VirtualDeviceResponseTypeSuite
+);
+
+const { WebSocketMessage } = createCheckers(
+  WebSocketMessageTypeSuite,
+  DevicesTypeSuite,
+  DeviceTypeSuite,
+  ChannelTypeSuite,
+  InOutPutTypeSuite,
+  ScenesTriggeredTypeSuite
+);
+
+function check(obj: unknown, checker: Checker, verbose: boolean): boolean {
+  if (verbose) {
+    try {
+      checker.check(obj);
+      return true;
+    } catch (error) {
+      console.error("Object validation failed!", error);
+      return false;
+    }
+  }
+
+  return checker.test(obj);
+}
+
+/**
+ * Determines whether the specified object is a web socket message.
+ * @param obj The object to be tested
+ * @param verbose Determines whether validation errors shall be logged. Default value is false.
+ * @returns A boolean value indicating whether the specified object is a @see Message.
+ */
+export function isWebSocketMessage(
+  obj: unknown,
+  verbose = false
+): obj is Message {
+  return check(obj, WebSocketMessage, verbose);
+}
+
+/**
+ * Determines whether the specified object is a configuration.
+ * @param obj The object to be tested
+ * @param verbose Determines whether validation errors shall be logged. Default value is false.
+ * @returns A boolean value indicating whether the specified object is a @see Config.
+ */
+export function isConfiguration(obj: unknown, verbose = false): obj is Config {
+  return check(obj, Configuration, verbose);
+}
+
+/**
+ * Determines whether the specified object is a device list.
+ * @param obj The object to be tested
+ * @param verbose Determines whether validation errors shall be logged. Default value is false.
+ * @returns A boolean value indicating whether the specified object is a @see DevList.
+ */
+export function isDeviceList(obj: unknown, verbose = false): obj is DevList {
+  return check(obj, DeviceList, verbose);
+}
+
+/**
+ * Determines whether the specified object is a device response.
+ * @param obj The object to be tested
+ * @param verbose Determines whether validation errors shall be logged. Default value is false.
+ * @returns A boolean value indicating whether the specified object is a @see DevResponse.
+ */
+export function isDeviceResponse(
+  obj: unknown,
+  verbose = false
+): obj is DevResponse {
+  return check(obj, DeviceResponse, verbose);
+}
+
+/**
+ * Determines whether the specified object is a valid response to a get data point request.
+ * @param obj The object to be tested
+ * @param verbose Determines whether validation errors shall be logged. Default value is false.
+ * @returns A boolean value indicating whether the specified object is a @see GetResponse.
+ */
+export function isGetDataPointResponse(
+  obj: unknown,
+  verbose = false
+): obj is GetResponse {
+  return check(obj, GetDataPointResponse, verbose);
+}
+
+/**
+ * Determines whether the specified object is a valid response to a set data point request.
+ * @param obj The object to be tested
+ * @param verbose Determines whether validation errors shall be logged. Default value is false.
+ * @returns A boolean value indicating whether the specified object is a @see SetResponse.
+ */
+export function isSetDataPointResponse(
+  obj: unknown,
+  verbose = false
+): obj is SetResponse {
+  return check(obj, SetDataPointResponse, verbose);
+}
+
+/**
+ * Determines whether the specified object is a virtual device response.
+ * @param obj The object to be tested
+ * @param verbose Determines whether validation errors shall be logged. Default value is false.
+ * @returns A boolean value indicating whether the specified object is a @see VDeviceResponse.
+ */
+export function isVirtualDeviceResponse(
+  obj: unknown,
+  verbose = false
+): obj is VDeviceResponse {
+  return check(obj, VirtualDeviceResponse, verbose);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

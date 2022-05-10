@@ -34,7 +34,8 @@
     "build": "npm run clean && webpack --node-env=production --config webpack.config.js",
     "test": "ts-node --project ./tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
     "test:coverage": "nyc npm run test",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "docs": "rimraf doc && jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "rxjs": "^7.5.5",
@@ -48,6 +49,7 @@
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
+    "better-docs": "^2.7.2",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
@@ -56,6 +58,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "jasmine": "^4.1.0",
     "jasmine-spec-reporter": "^7.0.0",
+    "jsdoc": "^3.6.10",
     "nyc": "^15.1.0",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
