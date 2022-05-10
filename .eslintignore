@@ -2,5 +2,6 @@
 .vscode
 coverage
 dist
+doc
 node_modules
 package-lock.json
