@@ -25,7 +25,8 @@ npm install --save freeathome-local-api-client
 
 ## Documentation
 
-A sample project illustrating the use of the library can be found at https://github.com/pgerke/freeathome-local-api-sample.
+The client library is documented using JSDoc, the generated documentation is available at https://pgerke.github.io/freeathome-local-api-client/.
+There is also a sample project illustrating the use of the library can be found at https://github.com/pgerke/freeathome-local-api-sample.
 
 ## I found a bug, what do I do?
 
