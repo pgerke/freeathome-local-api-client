@@ -27,5 +27,5 @@
     "noUnusedParameters": true
   },
   "include": ["src", "webpack.config.js"],
-  "exclude": ["node_modules", "dist", "test", "doc"]
+  "exclude": ["node_modules", "dist", "test", "docs"]
 }
