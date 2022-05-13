@@ -95,7 +95,7 @@ export class SystemAccessPoint {
     );
 
     // Process response
-    return await this.processRestResponse(response, isVirtualDeviceResponse);
+    return this.processRestResponse(response, isVirtualDeviceResponse);
   }
 
   private createWebSocket(certificateVerification: boolean): WebSocket {
@@ -167,7 +167,7 @@ export class SystemAccessPoint {
     );
 
     // Process response
-    return await this.processRestResponse(response, isConfiguration);
+    return this.processRestResponse(response, isConfiguration);
   }
 
   /**
@@ -179,7 +179,7 @@ export class SystemAccessPoint {
     const response: Response = await this.fetchDataViaRest("GET", "devicelist");
 
     // Process response
-    return await this.processRestResponse(response, isDeviceList);
+    return this.processRestResponse(response, isDeviceList);
   }
 
   /**
@@ -198,7 +198,7 @@ export class SystemAccessPoint {
     );
 
     // Process response
-    return await this.processRestResponse(response, isDeviceResponse);
+    return this.processRestResponse(response, isDeviceResponse);
   }
 
   /**
@@ -222,7 +222,7 @@ export class SystemAccessPoint {
     );
 
     // Process response
-    return await this.processRestResponse(response, isGetDataPointResponse);
+    return this.processRestResponse(response, isGetDataPointResponse);
   }
 
   /**
@@ -257,7 +257,7 @@ export class SystemAccessPoint {
     );
 
     // Process response
-    return await this.processRestResponse(response, isSetDataPointResponse);
+    return this.processRestResponse(response, isSetDataPointResponse);
   }
 
   private async fetchDataViaRest(
@@ -280,7 +280,7 @@ export class SystemAccessPoint {
     };
 
     // Get response from system access point
-    return await fetch(info, init);
+    return fetch(info, init);
   }
 
   private async processRestResponse<TResponse>(
