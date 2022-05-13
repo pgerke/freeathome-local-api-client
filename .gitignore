@@ -14,3 +14,6 @@ dist
 # Coverage
 .nyc_output
 coverage
+
+# SonarQube Scanner
+.scannerwork
