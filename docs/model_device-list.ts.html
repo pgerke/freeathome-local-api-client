@@ -42,6 +42,10 @@
         </a>
         <div class="logo">
             
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">free@home Local API Client</h1>
+                </a>
             
         </div>
         <div class="menu">
@@ -54,6 +58,15 @@
                     Documentation
                 </a>
                 
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/pgerke/freeathome-local-api-client"
+                        >
+                            GitHub
+                        </a>
+                    
                 
                 
             </div>
@@ -65,6 +78,10 @@
             class="sidebar "
             id="sidebarNav"
         >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
             
             <nav>
                 
@@ -87,10 +104,12 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * Describes a system access point device list.
- *
  * @interface
  */
 export interface DeviceList {
+  /**
+   * An array of the device serials connected to the system access point identified by the key.
+   */
   [key: string]: Array&lt;string>;
 }
 </code></pre>
@@ -119,6 +138,8 @@ export interface DeviceList {
 <script src="scripts/app.min.js"></script>
 <script>PR.prettyPrint();</script>
 <script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
 
 
 </body>

@@ -2,9 +2,14 @@
   "opts": {
     "destination": "./docs/",
     "recurse": true,
-    "template": "node_modules/better-docs"
+    "template": "node_modules/better-docs",
+    "readme": "./README.md",
+    "package": "./package.json"
   },
-  "plugins": ["node_modules/better-docs/typescript"],
+  "plugins": ["plugins/markdown", "node_modules/better-docs/typescript"],
+  "markdown": {
+    "idInHeadings": true
+  },
   "recurseDepth": 10,
   "sourceType": "module",
   "source": {
@@ -15,5 +20,19 @@
   "tags": {
     "allowUnknownTags": true,
     "dictionaries": ["jsdoc", "closure"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "search": true,
+    "better-docs": {
+      "name": "free@home Local API Client",
+      "navLinks": [
+        {
+          "label": "GitHub",
+          "href": "https://github.com/pgerke/freeathome-local-api-client"
+        }
+      ]
+    }
   }
 }
