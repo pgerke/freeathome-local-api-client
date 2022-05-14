@@ -35,7 +35,7 @@
     "test": "ts-node --project ./tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
     "test:coverage": "nyc npm run test",
     "lint": "eslint . --fix",
-    "docs": "rimraf doc && jsdoc -c jsdoc.json"
+    "docs": "rimraf docs && jsdoc -c jsdoc.json"
   },
   "dependencies": {
     "rxjs": "^7.5.5",

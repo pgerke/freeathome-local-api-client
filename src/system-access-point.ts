@@ -18,13 +18,10 @@ import {
 } from "./model";
 import { isVirtualDeviceResponse } from "./model/validator";
 
+/** The HTTP request method */
 type HttpRequestMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
-/**
- * The class representing a System Access Point.
- *
- * @class
- */
+/** The class representing a System Access Point. */
 export class SystemAccessPoint {
   /** The basic authentication key used for requests. */
   public readonly basicAuthKey: string;
@@ -40,11 +37,11 @@ export class SystemAccessPoint {
    * Constructs a new SystemAccessPoint instance
    *
    * @constructor
-   * @param hostName The system access point host name.
-   * @param userName The user name that shall be used to authenticate with the system access point.
-   * @param password The password that shall be used to authenticate with the system access point.
-   * @param tlsEnabled Determines whether the communication with the system access point shall be protected by TLS. Defaults to true
-   * @param verboseErrors Determines whether verbose error messages shall be used, for example for message validation. Defaults to false.
+   * @param hostName {string} The system access point host name.
+   * @param userName {string} The user name that shall be used to authenticate with the system access point.
+   * @param password {string} The password that shall be used to authenticate with the system access point.
+   * @param tlsEnabled {boolean} Determines whether the communication with the system access point shall be protected by TLS.
+   * @param verboseErrors {boolean} Determines whether verbose error messages shall be used, for example for message validation.
    */
   constructor(
     hostName: string,
@@ -64,9 +61,7 @@ export class SystemAccessPoint {
 
   /**
    * Connects to the System Access Point web socket.
-   *
-   * @function
-   * @param certificateVerification Determines whether the TLS certificate presented by the server will be verified.
+   * @param certificateVerification {boolean} Determines whether the TLS certificate presented by the server will be verified.
    */
   public connectWebSocket(certificateVerification = true): void {
     if (this.webSocket && this.webSocket.readyState === WebSocket.OPEN) {
@@ -78,9 +73,10 @@ export class SystemAccessPoint {
 
   /**
    * Creates a new virtual device.
-   * @param sysApUuid The UUID identifying the system access point
-   * @param deviceSerial The serial number to be assigned to the device.
-   * @param virtualDevice The virtual device to be created.
+   * @param sysApUuid {string} The UUID identifying the system access point.
+   * @param deviceSerial {string} The serial number to be assigned to the device.
+   * @param virtualDevice {VirtualDevice} The virtual device to be created.
+   * @returns {Promise.<VirtualDeviceResponse>} The response to the virtual device request.
    */
   public async createVirtualDevice(
     sysApUuid: string,
@@ -139,9 +135,7 @@ export class SystemAccessPoint {
 
   /**
    * Disconnects from the System Access Point web socket.
-   *
-   * @function
-   * @param force Determines whether or not the connection will be closed forcibly
+   * @param force {boolean} Determines whether or not the connection will be closed forcibly.
    */
   public disconnectWebSocket(force = false): void {
     if (!this.webSocket || this.webSocket.readyState === WebSocket.CLOSED) {
@@ -156,8 +150,8 @@ export class SystemAccessPoint {
   }
 
   /**
-   * Gets the configuration from the system access point
-   * @returns The @see Configuration
+   * Gets the configuration from the system access point.
+   * @returns {Promise.<Configuration>} The system access point configuration.
    */
   public async getConfiguration(): Promise<Configuration> {
     // Get response from system access point
@@ -172,7 +166,7 @@ export class SystemAccessPoint {
 
   /**
    * Gets the device list from the system access point.
-   * @returns The @see DeviceList
+   * @returns {Promise.<DeviceList>} The requested device list.
    */
   public async getDeviceList(): Promise<DeviceList> {
     // Get response from system access point
@@ -183,9 +177,10 @@ export class SystemAccessPoint {
   }
 
   /**
-   * Gets the specified device from the system access point
-   * @param sysApUuid The UUID identifying the system access point
-   * @param deviceSerial The device serial number
+   * Gets the specified device from the system access point.
+   * @param sysApUuid {string} The UUID identifying the system access point.
+   * @param deviceSerial {string} The device serial number.
+   * @returns {Promise.<DeviceResponse>} The response to the device request.
    */
   public async getDevice(
     sysApUuid: string,
@@ -203,11 +198,11 @@ export class SystemAccessPoint {
 
   /**
    * Gets the specified data point from the system access point.
-   * @param sysApUuid The UUID idenfifying the system access point
-   * @param deviceSerial The device serial number
-   * @param channel The channel identifier
-   * @param dataPoint The datapoint identifier
-   * @returns The requested @see GetDataPointResponse
+   * @param sysApUuid {string} The UUID idenfifying the system access point.
+   * @param deviceSerial {string} The device serial number.
+   * @param channel {string} The channel identifier.
+   * @param dataPoint {string} The datapoint identifier.
+   * @returns {Promise.<GetDataPointResponse>} The response to the get data point request.
    */
   public async getDatapoint(
     sysApUuid: string,
@@ -227,20 +222,20 @@ export class SystemAccessPoint {
 
   /**
    * Gets the web socket messages.
-   *
-   * @returns An observable that is updated with the messages received from the web socket.
+   * @returns {Observable.<WebSocketMessage>} An observable that is updated with the messages received from the web socket.
    */
   public getWebSocketMessages(): Observable<WebSocketMessage> {
     return this.webSocketMessageSubject.asObservable();
   }
+
   /**
    * Sets a new value for the specificed data point.
-   * @param sysApUuid The UUID idenfifying the system access point
-   * @param deviceSerial The device serial number
-   * @param channel The channel identifier
-   * @param dataPoint The datapoint identifier
-   * @param value The new value to be set
-   * @returns A @see SetDataPointResponse describing the result of the operation
+   * @param sysApUuid {string} The UUID idenfifying the system access point.
+   * @param deviceSerial {string} The device serial number.
+   * @param channel {string} The channel identifier.
+   * @param dataPoint {string} The datapoint identifier.
+   * @param value {string} The new value to be set.
+   * @returns {Promise.<SetDataPointResponse>} The response to the set data point request.
    */
   public async setDatapoint(
     sysApUuid: string,

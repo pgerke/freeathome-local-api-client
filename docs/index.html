@@ -40,6 +40,10 @@
         </a>
         <div class="logo">
             
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">free@home Local API Client</h1>
+                </a>
             
         </div>
         <div class="menu">
@@ -52,6 +56,15 @@
                     Documentation
                 </a>
                 
+                 
+                    
+                        <a
+                            class="link user-link "
+                            href="https://github.com/pgerke/freeathome-local-api-client"
+                        >
+                            GitHub
+                        </a>
+                    
                 
                 
             </div>
@@ -63,6 +76,10 @@
             class="sidebar "
             id="sidebarNav"
         >
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="Search docs..." class="input">
+                </div>
             
             <nav>
                 
@@ -99,6 +116,50 @@
 
 
 
+    <section>
+        <article><h1 id="freeathome-local-api-client">freeathome-local-api-client</h1>
+<p>A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript.</p>
+<h2 id="installation">Installation</h2>
+<p>You can install the package from npmjs.com:</p>
+<pre class="prettyprint source"><code>npm install --save freeathome-local-api-client
+</code></pre>
+<h2 id="features">Features</h2>
+<ul>
+<li>Connect to your B+J System Access Point 2.0 and control it using the local API.</li>
+<li>The complete local API is supported!</li>
+<li>Read the configuration, the device list and any datapoint offered by any device connected to the system</li>
+<li>Control your devices by setting new values for data points</li>
+<li>100% covered by automated unit tests</li>
+</ul>
+<h2 id="usage-requirements">Usage Requirements</h2>
+<ul>
+<li>A free@home System Access Point 2.0 running firmware &gt; v3.0</li>
+<li>Local API has to be enabled for the user account to be used</li>
+</ul>
+<h2 id="documentation">Documentation</h2>
+<p>The client library is documented using JSDoc, the generated documentation is available at https://pgerke.github.io/freeathome-local-api-client/.
+There is also a sample project illustrating the use of the library can be found at https://github.com/pgerke/freeathome-local-api-sample.</p>
+<h2 id="i-found-a-bug%2C-what-do-i-do%3F">I found a bug, what do I do?</h2>
+<p>I'm happy to hear any feedback regarding the library or it's implementation, be it critizism, praise or rants. Please create a <a href="https://github.com/pgerke/freeathome-local-api-client/issues">GitHub issue</a> or drop me an <a href="mailto:info@philipgerke.com">email</a> if you would like to contact me.</p>
+<p>I would especially appreciate, if you could report any issues you encounter while using the library. Issues I know about, I can probably fix.</p>
+<p>If you want to submit a bug report, please check if the issue you have has already been reported. If you want to contribute additional information to the issue, please add it to the existing issue instead of creating another one. Duplicate issues will take time from bugfixing and thus delay a fix.</p>
+<p>While creating a bug report, please make it easy for me to fix it by giving us all the details you have about the issue. Always include the version of the library and a short concise description of the issue. Besides that, there are a few other pieces of information that help tracking down bugs:</p>
+<ul>
+<li>The system environment in which the issue occurred (e.g. node version)</li>
+<li>Some steps to reproduce the issue, e.g. a code snippet</li>
+<li>The expected behaviour and how the failed failed to meet that expectation</li>
+<li>Anything else you think I might need</li>
+</ul>
+<h2 id="i-have-a-feature-request%2C-what-do-i-do%3F">I have a feature request, what do I do?</h2>
+<p>Please create a <a href="https://github.com/pgerke/freeathome-local-api-client/issues">GitHub issue</a> or drop me an <a href="mailto:info@philipgerke.com">email</a>!</p>
+<h2 id="non-affiliation-disclaimer">Non-Affiliation Disclaimer</h2>
+<p>This library is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by Busch-Jaeger Elektro GmbH or ABB Asea Brown Boveri Ltd or . All product and company names are the registered trademarks of their original owners. The use of any trade name or trademark is for identification and reference purposes only and does not imply any association with the trademark holder of their product brand.</p>
+<h2 id="license">License</h2>
+<p>The project is subject to the MIT license unless otherwise noted. A copy can be found in the root directory of the project <a href="./LICENSE">LICENSE</a>.</p>
+<hr>
+<p>Made with ❤️ by <a href="https://github.com/pgerke">Philip Gerke</a></p></article>
+    </section>
+
 
 
 
@@ -123,6 +184,8 @@
 <script src="scripts/app.min.js"></script>
 <script>PR.prettyPrint();</script>
 <script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
 
 
 </body>
