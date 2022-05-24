@@ -255,6 +255,54 @@ export class SystemAccessPoint {
     return this.processRestResponse(response, isSetDataPointResponse);
   }
 
+  /**
+   * Triggeres the given action for the specified proxy device. Please note that this method is part of the experimental API!
+   * @param sysApUuid {string} The UUID idenfifying the system access point.
+   * @param deviceClass {string} The device class.
+   * @param deviceSerial {string} The device serial number.
+   * @param action {string} The action to be triggered.
+   * @returns {Promise.<DeviceResponse>} The response to the request.
+   */
+  public async triggerProxyDevice(
+    sysApUuid: string,
+    deviceClass: string,
+    deviceSerial: string,
+    action: string
+  ): Promise<DeviceResponse> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "GET",
+      `proxydevice/${sysApUuid}/${deviceClass}/${deviceSerial}/action/${action}`
+    );
+
+    // Process response
+    return this.processRestResponse(response, isDeviceResponse);
+  }
+
+  /**
+   * Sets the given value for the specified proxy device. Please note that this method is part of the experimental API!
+   * @param sysApUuid {string} The UUID idenfifying the system access point.
+   * @param deviceClass {string} The device class.
+   * @param deviceSerial {string} The device serial number.
+   * @param value {string} The value to be set.
+   * @returns {Promise.<DeviceResponse>} The response to the request.
+   */
+  public async setProxyDeviceValue(
+    sysApUuid: string,
+    deviceClass: string,
+    deviceSerial: string,
+    value: string
+  ): Promise<DeviceResponse> {
+    // Get response from system access point
+    const response: Response = await this.fetchDataViaRest(
+      "PUT",
+      `proxydevice/${sysApUuid}/${deviceClass}/${deviceSerial}/value/${value}`
+    );
+
+    // Process response
+    return this.processRestResponse(response, isDeviceResponse);
+  }
+
   private async fetchDataViaRest(
     method: HttpRequestMethod,
     route: string,

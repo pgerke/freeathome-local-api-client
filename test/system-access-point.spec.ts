@@ -373,4 +373,34 @@ describe("System Access Point", () => {
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(await sysAp.setDatapoint("", "", "", "", "")).toEqual(obj);
   });
+
+  it("should trigger proxy device via REST endpoint", async () => {
+    const obj: DeviceResponse = {
+      Test: {
+        devices: {},
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    expect(await sysAp.triggerProxyDevice("", "", "", "")).toEqual(obj);
+  });
+
+  it("should set value for proxy device via REST endpoint", async () => {
+    const obj: DeviceResponse = {
+      Test: {
+        devices: {},
+      },
+    };
+    const response = {
+      status: 200,
+      json: () => Promise.resolve(obj),
+    } as Response;
+    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    expect(await sysAp.setProxyDeviceValue("", "", "", "")).toEqual(obj);
+  });
 });
