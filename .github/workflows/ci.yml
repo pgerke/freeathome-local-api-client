@@ -60,3 +60,9 @@ jobs:
           name: coverage
           path: coverage
           retention-days: 5
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v3.1.0
+        with:
+          directory: ./coverage           
+    
+          
