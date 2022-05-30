@@ -2,6 +2,11 @@
 
 A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript.
 
+![CI](https://img.shields.io/github/workflow/status/pgerke/freeathome-local-api-client/Continuous%20Integration?style=flat-square)
+![Dependencies](https://img.shields.io/librariesio/release/npm/freeathome-local-api-client?style=flat-square)
+![npm](https://img.shields.io/npm/v/freeathome-local-api-client?style=flat-square)
+![License](https://img.shields.io/github/license/pgerke/freeathome-local-api-client?style=flat-square)
+
 ## Installation
 
 You can install the package from npmjs.com:
