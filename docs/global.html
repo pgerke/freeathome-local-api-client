@@ -83,7 +83,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
                 
             </nav>
         </div>
@@ -258,7 +258,7 @@
         
         <span class="code-name">
             
-                isConfiguration<span class="signature">(obj, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+                isConfiguration<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -330,6 +330,31 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>verbose</code></td>
   
 
@@ -394,7 +419,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line39">line 39</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line41">line 41</a>
             </span>
         </p>
     
@@ -456,7 +481,7 @@
         
         <span class="code-name">
             
-                isDeviceList<span class="signature">(obj, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+                isDeviceList<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -528,6 +553,31 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>verbose</code></td>
   
 
@@ -592,7 +642,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line48">line 48</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line51">line 51</a>
             </span>
         </p>
     
@@ -654,7 +704,7 @@
         
         <span class="code-name">
             
-                isDeviceResponse<span class="signature">(obj, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+                isDeviceResponse<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -726,6 +776,31 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>verbose</code></td>
   
 
@@ -790,7 +865,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line57">line 57</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line61">line 61</a>
             </span>
         </p>
     
@@ -852,7 +927,7 @@
         
         <span class="code-name">
             
-                isGetDataPointResponse<span class="signature">(obj, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+                isGetDataPointResponse<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -924,6 +999,31 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>verbose</code></td>
   
 
@@ -988,7 +1088,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line66">line 66</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line71">line 71</a>
             </span>
         </p>
     
@@ -1050,7 +1150,7 @@
         
         <span class="code-name">
             
-                isSetDataPointResponse<span class="signature">(obj, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+                isSetDataPointResponse<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -1122,6 +1222,31 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>verbose</code></td>
   
 
@@ -1186,7 +1311,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line75">line 75</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line81">line 81</a>
             </span>
         </p>
     
@@ -1248,7 +1373,7 @@
         
         <span class="code-name">
             
-                isVirtualDeviceResponse<span class="signature">(obj, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+                isVirtualDeviceResponse<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -1320,6 +1445,31 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>verbose</code></td>
   
 
@@ -1384,7 +1534,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line84">line 84</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line91">line 91</a>
             </span>
         </p>
     
@@ -1446,7 +1596,7 @@
         
         <span class="code-name">
             
-                isWebSocketMessage<span class="signature">(obj, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+                isWebSocketMessage<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
             
         </span>
     </h4>
@@ -1518,6 +1668,31 @@
             
 <tr class="deep-level-0">
   
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
       <td class="name"><code>verbose</code></td>
   
 
@@ -1582,7 +1757,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line30">line 30</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line31">line 31</a>
             </span>
         </p>
     
@@ -1721,7 +1896,7 @@
         <p class="tag-source">
             <a href="system-access-point.ts.html" class="button">View Source</a>
             <span>
-                <a href="system-access-point.ts.html">system-access-point.ts</a>, <a href="system-access-point.ts.html#line258">line 258</a>
+                <a href="system-access-point.ts.html">system-access-point.ts</a>, <a href="system-access-point.ts.html#line262">line 262</a>
             </span>
         </p>
     

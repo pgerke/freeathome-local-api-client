@@ -15,6 +15,7 @@ import {
   WebSocketMessage,
   VirtualDevice,
   VirtualDeviceResponse,
+  Logger,
 } from "./model";
 import { isVirtualDeviceResponse } from "./model/validator";
 
@@ -29,6 +30,7 @@ export class SystemAccessPoint {
   public readonly hostName: string;
   /** Determines whether requests to the system access point will use TLS. */
   public readonly tlsEnabled: boolean;
+  private readonly logger: Logger;
   private verboseErrors: boolean;
   private webSocket?: WebSocket;
   private readonly webSocketMessageSubject = new Subject<WebSocketMessage>();
@@ -42,14 +44,19 @@ export class SystemAccessPoint {
    * @param password {string} The password that shall be used to authenticate with the system access point.
    * @param tlsEnabled {boolean} Determines whether the communication with the system access point shall be protected by TLS.
    * @param verboseErrors {boolean} Determines whether verbose error messages shall be used, for example for message validation.
+   * @param logger {Logger} The logger instance to be used. If no explicit implementation is provided, the this.logger will be used for logging.
    */
   constructor(
     hostName: string,
     userName: string,
     password: string,
     tlsEnabled = true,
-    verboseErrors = false
+    verboseErrors = false,
+    logger?: Logger
   ) {
+    // Configure logging
+    this.logger = logger ?? console;
+
     // Create Basic Authentication key
     this.basicAuthKey = Buffer.from(`${userName}:${password}`, "utf8").toString(
       "base64"
@@ -97,7 +104,7 @@ export class SystemAccessPoint {
   private createWebSocket(certificateVerification: boolean): WebSocket {
     // Disabling certificate verification is discouraged, issue a warning
     if (this.tlsEnabled && !certificateVerification) {
-      console.warn(
+      this.logger.warn(
         "TLS certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
       );
     }
@@ -113,20 +120,22 @@ export class SystemAccessPoint {
     };
     const webSocket = new WebSocket(url, options);
     webSocket.on("error", (error: Error) =>
-      console.error("Error received", error)
+      this.logger.error("Error received", error)
     );
     webSocket.on("ping", (data: Buffer) =>
-      console.debug("Ping received", data.toString("ascii"))
+      this.logger.debug("Ping received", data.toString("ascii"))
     );
     webSocket.on("pong", (data: Buffer) =>
-      console.debug("Pong received", data.toString("ascii"))
+      this.logger.debug("Pong received", data.toString("ascii"))
     );
     webSocket.on("unexpected-response", () =>
-      console.error("Unexpected response received")
+      this.logger.error("Unexpected response received")
     );
-    webSocket.on("upgrade", () => console.debug("Upgrade request received"));
-    webSocket.on("open", () => console.log("Connection opened"));
-    webSocket.on("close", () => console.log("Connection closed"));
+    webSocket.on("upgrade", () =>
+      this.logger.debug("Upgrade request received")
+    );
+    webSocket.on("open", () => this.logger.log("Connection opened"));
+    webSocket.on("close", () => this.logger.log("Connection closed"));
     webSocket.on("message", (data: RawData, isBinary: boolean) =>
       this.processWebSocketMessage(data, isBinary)
     );
@@ -328,7 +337,11 @@ export class SystemAccessPoint {
 
   private async processRestResponse<TResponse>(
     response: Response,
-    typeGuard: (obj: unknown, verbose: boolean) => obj is TResponse
+    typeGuard: (
+      obj: unknown,
+      logger: Logger,
+      verbose: boolean
+    ) => obj is TResponse
   ): Promise<TResponse> {
     let body: unknown;
     let message: string;
@@ -337,26 +350,26 @@ export class SystemAccessPoint {
     switch (response.status) {
       case 200:
         body = await response.json();
-        if (!typeGuard(body, this.verboseErrors)) {
+        if (!typeGuard(body, this.logger, this.verboseErrors)) {
           message = "Received message has an unexpected type!";
-          console.error(message, body);
+          this.logger.error(message, body);
           throw new Error(message);
         }
 
         return body;
       case 401:
         message = "Authentication information is missing or invalid.";
-        console.error(message);
+        this.logger.error(message);
         throw new Error(message);
       case 502:
         message = await response.text();
-        console.error(message);
+        this.logger.error(message);
         throw new Error(message);
       default:
         message = `Received HTTP ${
           response.status
         } status code unexpectedly: ${await response.text()}`;
-        console.error(message);
+        this.logger.error(message);
         throw new Error(message);
     }
   }
@@ -364,13 +377,13 @@ export class SystemAccessPoint {
   private processWebSocketMessage(data: RawData, isBinary: boolean): void {
     // Do not process binary messages
     if (isBinary) {
-      console.warn(
+      this.logger.warn(
         "Binary message received. Binary messages are not processed."
       );
       return;
     }
 
-    console.debug("Message received");
+    this.logger.debug("Message received");
     /*
      * Deserialize the message.
      * The message is expected to be deserializable as a web socket message.
@@ -379,11 +392,11 @@ export class SystemAccessPoint {
     const serialized = data.toString();
     const message: unknown = JSON.parse(serialized);
 
-    if (isWebSocketMessage(message, this.verboseErrors)) {
+    if (isWebSocketMessage(message, this.logger, this.verboseErrors)) {
       this.webSocketMessageSubject.next(message);
       return;
     }
 
-    console.error("Received message has an unexpected type!", serialized);
+    this.logger.error("Received message has an unexpected type!", serialized);
   }
 }
