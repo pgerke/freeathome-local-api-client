@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "ES2022",
-    "outDir": "dist/esm",
     "target": "ES6"
   },
   "include": ["src", "webpack.esm.config.js"]
