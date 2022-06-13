@@ -25,6 +25,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src"],
+  "include": ["src", "fixup.js", "webpack.*.config.js"],
   "exclude": ["node_modules", "dist", "test", "docs"]
 }
