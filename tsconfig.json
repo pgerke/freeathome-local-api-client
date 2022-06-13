@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
     "target": "ES6",
     "module": "ES2022",
     "lib": ["ES6", "DOM"],
@@ -26,6 +25,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src", "webpack.config.js"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist", "test", "docs"]
 }
