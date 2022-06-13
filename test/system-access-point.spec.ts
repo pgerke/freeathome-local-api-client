@@ -57,18 +57,12 @@ describe("System Access Point", () => {
 
   it("should create a new web socket instance on connect", () => {
     spyOn(WebSocket.prototype, "send");
-    const sysAp = new SystemAccessPoint(
-      "ap",
-      "username",
-      "password",
-      undefined,
-      undefined,
-      logger
-    );
+    const spy = spyOn(console, "warn");
+    const sysAp = new SystemAccessPoint("ap", "username", "password");
     const instance = sysAp as unknown as { webSocket?: WebSocket };
     expect(instance.webSocket).toBeUndefined();
     sysAp.connectWebSocket(true);
-    expect(logger.warn).not.toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
     expect(instance.webSocket).toBeInstanceOf(WebSocket);
   });
 
