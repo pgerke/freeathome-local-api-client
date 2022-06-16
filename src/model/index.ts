@@ -15,7 +15,9 @@ export { SetDataPointResponse } from "./set-data-point-response";
 export { SysAP } from "./sys-ap";
 export { Users } from "./users";
 export {
+  isChannel,
   isConfiguration,
+  isDevice,
   isDeviceList,
   isDeviceResponse,
   isGetDataPointResponse,

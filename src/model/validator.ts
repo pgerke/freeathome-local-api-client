@@ -20,12 +20,16 @@ import {
 import { Checker, createCheckers } from "ts-interface-checker";
 import { WebSocketMessage as Message } from "./websocket-message";
 import { Configuration as Config } from "./configuration";
+import { Channel as Chan } from "./channel";
+import { Device as Dev } from "./device";
 import { DeviceList as DevList } from "./device-list";
 import { DeviceResponse as DevResponse } from "./device-response";
 import { GetDataPointResponse as GetResponse } from "./get-data-point-response";
 import { SetDataPointResponse as SetResponse } from "./set-data-point-response";
 import { VirtualDeviceResponse as VDeviceResponse } from "./virtual-device-response";
 import { Logger } from "./logger";
+
+const { Channel } = createCheckers(ChannelTypeSuite, InOutPutTypeSuite);
 
 const { Configuration } = createCheckers(
   ConfigurationTypeSuite,
@@ -38,6 +42,12 @@ const { Configuration } = createCheckers(
   SysApTypeSuite,
   UsersTypeSuite,
   ErrorTypeSuite
+);
+
+const { Device } = createCheckers(
+  DeviceTypeSuite,
+  ChannelTypeSuite,
+  InOutPutTypeSuite
 );
 
 const { DeviceList } = createCheckers(DeviceListTypeSuite);
@@ -189,4 +199,34 @@ export function isVirtualDeviceResponse(
   verbose = false
 ): obj is VDeviceResponse {
   return check(obj, VirtualDeviceResponse, logger, verbose);
+}
+
+/**
+ * Determines whether the specified object is a channel.
+ * @param obj {object} The object to be tested
+ * @param logger {Logger} The logger instance to be used.
+ * @param verbose {boolean} Determines whether validation errors shall be logged. Default value is false.
+ * @returns {boolean} A value indicating whether the specified object is a channel.
+ */
+export function isChannel(
+  obj: unknown,
+  logger: Logger,
+  verbose = false
+): obj is Chan {
+  return check(obj, Channel, logger, verbose);
+}
+
+/**
+ * Determines whether the specified object is a device.
+ * @param obj {object} The object to be tested
+ * @param logger {Logger} The logger instance to be used.
+ * @param verbose {boolean} Determines whether validation errors shall be logged. Default value is false.
+ * @returns {boolean} A value indicating whether the specified object is a device.
+ */
+export function isDevice(
+  obj: unknown,
+  logger: Logger,
+  verbose = false
+): obj is Dev {
+  return check(obj, Device, logger, verbose);
 }

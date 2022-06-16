@@ -1,5 +1,7 @@
 import {
+  Channel,
   Configuration,
+  Device,
   DeviceList,
   DeviceResponse,
   GetDataPointResponse,
@@ -14,7 +16,11 @@ import {
   VirtualDeviceResponse,
   WebSocketMessage,
 } from "../src/model";
-import { isVirtualDeviceResponse } from "../src/model/validator";
+import {
+  isChannel,
+  isDevice,
+  isVirtualDeviceResponse,
+} from "../src/model/validator";
 import { originalTimeout } from "../test";
 
 const logger: Logger = console;
@@ -278,6 +284,65 @@ describe("Validator", () => {
       },
     };
     expect(isVirtualDeviceResponse(obj, logger, true)).toBeFalse();
+    expect(spy).toHaveBeenCalledWith(
+      "Object validation failed!",
+      jasmine.anything()
+    );
+  });
+
+  it("should verify a valid channel", () => {
+    const obj: Channel = {
+      displayName: "Test Channel",
+      functionID: "1",
+    };
+    expect(isChannel(obj, logger, true)).toBeTrue();
+  });
+
+  it("should fail verification for an invalid channel", () => {
+    const obj = {
+      displayName: "Test Channel",
+      functionID: "1",
+      floor: 1,
+    };
+    expect(isChannel(obj, logger)).toBeFalse();
+  });
+
+  it("should throw an error during verification for an invalid virtual device response in verbose mode", () => {
+    const spy = spyOn(console, "error");
+    const obj = {
+      displayName: "Test Channel",
+      functionID: "1",
+      floor: 1,
+    };
+    expect(isChannel(obj, logger, true)).toBeFalse();
+    expect(spy).toHaveBeenCalledWith(
+      "Object validation failed!",
+      jasmine.anything()
+    );
+  });
+
+  it("should verify a valid device", () => {
+    const obj: Device = {
+      displayName: "Test Device",
+    };
+    expect(isDevice(obj, logger, true)).toBeTrue();
+  });
+
+  it("should fail verification for an invalid channel", () => {
+    const obj = {
+      displayName: "Test Device",
+      floor: 1,
+    };
+    expect(isDevice(obj, logger)).toBeFalse();
+  });
+
+  it("should throw an error during verification for an invalid virtual device response in verbose mode", () => {
+    const spy = spyOn(console, "error");
+    const obj = {
+      displayName: "Test Device",
+      floor: 1,
+    };
+    expect(isDevice(obj, logger, true)).toBeFalse();
     expect(spy).toHaveBeenCalledWith(
       "Object validation failed!",
       jasmine.anything()
