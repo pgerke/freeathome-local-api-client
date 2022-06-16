@@ -8,13 +8,16 @@ export { Error } from "./error";
 export { Floors } from "./floors";
 export { GetDataPointResponse } from "./get-data-point-response";
 export { InOutPut } from "./in-out-put";
+export { Logger } from "./logger";
 export { Rooms } from "./rooms";
 export { ScenesTriggered } from "./scenes-triggered";
 export { SetDataPointResponse } from "./set-data-point-response";
 export { SysAP } from "./sys-ap";
 export { Users } from "./users";
 export {
+  isChannel,
   isConfiguration,
+  isDevice,
   isDeviceList,
   isDeviceResponse,
   isGetDataPointResponse,

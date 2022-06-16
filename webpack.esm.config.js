@@ -1,19 +1,18 @@
-import { resolve, dirname } from "path";
-import { fileURLToPath } from "url";
+const path = require("path");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-export default {
-  entry: resolve(__dirname, "src/index.ts"),
+module.exports = {
+  entry: path.resolve(__dirname, "src/index.ts"),
   mode: "production",
   devtool: "source-map",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        loader: "ts-loader",
         exclude: /node_modules/,
+        options: {
+          configFile: "tsconfig.esm.json",
+        },
       },
     ],
   },
@@ -22,8 +21,9 @@ export default {
   },
   externals: [/node_modules/, "ws", "ts-interface-checker"],
   output: {
-    filename: "bundle.js",
-    path: resolve(__dirname, "dist"),
+    filename: "index.js",
+    path: path.resolve(__dirname, "dist/esm"),
+    module: true,
     library: {
       type: "module",
     },

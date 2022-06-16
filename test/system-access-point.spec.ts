@@ -5,6 +5,7 @@ import {
   Configuration,
   DeviceResponse,
   GetDataPointResponse,
+  Logger,
   SetDataPointResponse,
   VirtualDeviceResponse,
   VirtualDeviceType,
@@ -12,10 +13,36 @@ import {
 } from "../src/model";
 import { Subject } from "rxjs";
 
+const logger: Logger = {
+  debug: jasmine.createSpy(),
+  error: jasmine.createSpy(),
+  log: jasmine.createSpy(),
+  warn: jasmine.createSpy(),
+};
+
 describe("System Access Point", () => {
   afterAll(() => {
     // Restore the default Jasmine timeout after the test suite.
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+  });
+
+  it("should use the console logger by default", () => {
+    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const instance = sysAp as unknown as { logger: Logger };
+    expect(instance.logger).toEqual(console);
+  });
+
+  it("should use a custom logger", () => {
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger
+    );
+    const instance = sysAp as unknown as { logger: Logger };
+    expect(instance.logger).toEqual(logger);
   });
 
   it("should throw an error if the connection is requested and the web socket is already open", () => {
@@ -31,7 +58,7 @@ describe("System Access Point", () => {
   it("should create a new web socket instance on connect", () => {
     spyOn(WebSocket.prototype, "send");
     const spy = spyOn(console, "warn");
-    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const sysAp = new SystemAccessPoint("localhost", "username", "password");
     const instance = sysAp as unknown as { webSocket?: WebSocket };
     expect(instance.webSocket).toBeUndefined();
     sysAp.connectWebSocket(true);
@@ -41,12 +68,18 @@ describe("System Access Point", () => {
 
   it("should warn if certificate verification is disabled", () => {
     spyOn(WebSocket.prototype, "send");
-    const spy = spyOn(console, "warn");
-    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const sysAp = new SystemAccessPoint(
+      "localhost",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger
+    );
     const instance = sysAp as unknown as { webSocket?: WebSocket };
     expect(instance.webSocket).toBeUndefined();
     sysAp.connectWebSocket(false);
-    expect(spy).toHaveBeenCalledWith(
+    expect(logger.warn).toHaveBeenCalledWith(
       "TLS certificate verification is disabled! This poses a security risk, activating certificate verification is strictly recommended."
     );
     expect(instance.webSocket).toBeInstanceOf(WebSocket);
@@ -54,37 +87,41 @@ describe("System Access Point", () => {
 
   it("should call web socket event handlers", () => {
     spyOn(WebSocket.prototype, "send");
-    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      false,
+      undefined,
+      logger
+    );
     const instance = sysAp as unknown as {
       webSocket?: WebSocket;
       processWebSocketMessage: (data: RawData, isBinary: boolean) => void;
     };
     sysAp.connectWebSocket();
     expect(instance.webSocket).toBeInstanceOf(WebSocket);
-    let spy = spyOn(console, "error");
     const error = new Error("Test Error");
     instance.webSocket?.emit("error", error);
-    expect(spy).toHaveBeenCalledWith("Error received", error);
-    spy.calls.reset();
+    expect(logger.error).toHaveBeenCalledWith("Error received", error);
+    (logger.error as jasmine.Spy).calls.reset();
     instance.webSocket?.emit("unexpected-response");
-    expect(spy).toHaveBeenCalledWith("Unexpected response received");
-    spy = spyOn(console, "log");
+    expect(logger.error).toHaveBeenCalledWith("Unexpected response received");
     instance.webSocket?.emit("open");
-    expect(spy).toHaveBeenCalledWith("Connection opened");
-    spy.calls.reset();
+    expect(logger.log).toHaveBeenCalledWith("Connection opened");
+    (logger.log as jasmine.Spy).calls.reset();
     instance.webSocket?.emit("close");
-    expect(spy).toHaveBeenCalledWith("Connection closed");
-    spy = spyOn(console, "debug");
+    expect(logger.log).toHaveBeenCalledWith("Connection closed");
     const data = Buffer.from("Test", "ascii");
     instance.webSocket?.emit("ping", data);
-    expect(spy).toHaveBeenCalledWith("Ping received", "Test");
-    spy.calls.reset();
+    expect(logger.debug).toHaveBeenCalledWith("Ping received", "Test");
+    (logger.debug as jasmine.Spy).calls.reset();
     instance.webSocket?.emit("pong", data);
-    expect(spy).toHaveBeenCalledWith("Pong received", "Test");
-    spy.calls.reset();
+    expect(logger.debug).toHaveBeenCalledWith("Pong received", "Test");
+    (logger.debug as jasmine.Spy).calls.reset();
     instance.webSocket?.emit("upgrade", data);
-    expect(spy).toHaveBeenCalledWith("Upgrade request received");
-    spy = spyOn(instance, "processWebSocketMessage");
+    expect(logger.debug).toHaveBeenCalledWith("Upgrade request received");
+    const spy = spyOn(instance, "processWebSocketMessage");
     instance.webSocket?.emit("message", {}, true);
     expect(spy).toHaveBeenCalled();
   });
@@ -139,38 +176,50 @@ describe("System Access Point", () => {
 
   it("should not process binary messages", () => {
     spyOn(WebSocket.prototype, "send");
-    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      false,
+      undefined,
+      logger
+    );
     const instance = sysAp as unknown as {
       webSocket?: WebSocket;
       webSocketMessageSubject: Subject<WebSocketMessage>;
     };
     const nextSpy = spyOn(instance.webSocketMessageSubject, "next");
-    const warnSpy = spyOn(console, "warn");
     sysAp.connectWebSocket();
     expect(instance.webSocket).toBeInstanceOf(WebSocket);
     instance.webSocket?.emit("message", Buffer.from("Test", "ascii"), true);
     expect(nextSpy).not.toHaveBeenCalled();
-    expect(warnSpy).toHaveBeenCalledWith(
+    expect(logger.warn).toHaveBeenCalledWith(
       "Binary message received. Binary messages are not processed."
     );
   });
 
   it("should not process unknown non-binary messages", () => {
     spyOn(WebSocket.prototype, "send");
-    const sysAp = new SystemAccessPoint("ap", "username", "password", false);
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      false,
+      undefined,
+      logger
+    );
     const instance = sysAp as unknown as {
       webSocket?: WebSocket;
       webSocketMessageSubject: Subject<WebSocketMessage>;
     };
     const nextSpy = spyOn(instance.webSocketMessageSubject, "next");
-    const errorSpy = spyOn(console, "error");
     sysAp.connectWebSocket();
     expect(instance.webSocket).toBeInstanceOf(WebSocket);
     const obj = { isTest: true };
     const message = JSON.stringify(obj);
     instance.webSocket?.emit("message", Buffer.from(message, "ascii"), false);
     expect(nextSpy).not.toHaveBeenCalled();
-    expect(errorSpy).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "Received message has an unexpected type!",
       message
     );
@@ -205,7 +254,6 @@ describe("System Access Point", () => {
   });
 
   it("should throw an error if received message fails to pass type guard", async () => {
-    const spy = spyOn(console, "error");
     const obj = {
       Test: {
         key: "value",
@@ -216,7 +264,14 @@ describe("System Access Point", () => {
       json: () => Promise.resolve(obj),
     } as Response;
     globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
-    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger
+    );
     try {
       await sysAp.getDeviceList();
       fail();
@@ -225,17 +280,23 @@ describe("System Access Point", () => {
         new Error("Received message has an unexpected type!")
       );
     }
-    expect(spy).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "Received message has an unexpected type!",
       obj
     );
   });
 
   it("should process unauthorized response", async () => {
-    const spy = spyOn(console, "error");
     const response = { status: 401 } as Response;
     globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
-    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger
+    );
     try {
       await sysAp.getDeviceList();
       fail();
@@ -244,36 +305,48 @@ describe("System Access Point", () => {
         new Error("Authentication information is missing or invalid.")
       );
     }
-    expect(spy).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "Authentication information is missing or invalid."
     );
   });
 
   it("should process bad gateway response", async () => {
-    const spy = spyOn(console, "error");
     const response = {
       status: 502,
       text: () => Promise.resolve("Test Error"),
     } as Response;
     globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
-    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger
+    );
     try {
       await sysAp.getDeviceList();
       fail();
     } catch (error) {
       expect(error).toEqual(new Error("Test Error"));
     }
-    expect(spy).toHaveBeenCalledWith("Test Error");
+    expect(logger.error).toHaveBeenCalledWith("Test Error");
   });
 
   it("should process unexpected error response", async () => {
-    const spy = spyOn(console, "error");
     const response = {
       status: 403,
       text: () => Promise.resolve("Test Error"),
     } as Response;
     globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
-    const sysAp = new SystemAccessPoint("ap", "username", "password");
+    const sysAp = new SystemAccessPoint(
+      "ap",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger
+    );
     try {
       await sysAp.getDeviceList();
       fail();
@@ -282,7 +355,7 @@ describe("System Access Point", () => {
         new Error("Received HTTP 403 status code unexpectedly: Test Error")
       );
     }
-    expect(spy).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "Received HTTP 403 status code unexpectedly: Test Error"
     );
   });

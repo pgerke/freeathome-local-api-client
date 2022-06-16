@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> VirtualDevice</title>
+  <title> Logger</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -91,7 +91,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Interface</p>
-                    <h1>VirtualDevice</h1>
+                    <h1>Logger</h1>
                 </header>
                 
 
@@ -102,7 +102,7 @@
 
 <header>
     
-        <h2>VirtualDevice</h2>
+        <h2>Logger</h2>
         
     
 </header>
@@ -111,7 +111,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Defines a virtual device.</p></div>
+            <div class="description"><p>Describes the interface a logger has to provide to be usable for the library.</p></div>
         
 
         
@@ -150,9 +150,9 @@
 
     
         <p class="tag-source">
-            <a href="model_virtual-device.ts.html" class="button">View Source</a>
+            <a href="model_logger.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_virtual-device.ts.html">model/virtual-device.ts</a>, <a href="model_virtual-device.ts.html#line83">line 83</a>
+                <a href="model_logger.ts.html">model/logger.ts</a>, <a href="model_logger.ts.html#line4">line 4</a>
             </span>
         </p>
     
@@ -185,19 +185,17 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<code class="param-type">object</code>
+<code class="param-type">function</code>
 
 
     </span>
 
-<h4 class="name" id="properties">
-    <a class="href-link" href="#properties">#</a>
+<h4 class="name" id="debug">
+    <a class="href-link" href="#debug">#</a>
     
     <span class="code-name">
-        properties
+        debug
     </span>
-    
-        <span class='tag'>Optional</span>
     
 </h4>
 
@@ -205,103 +203,10 @@
 
 
 <div class="description">
-    <p>The virtual device properties</p>
+    <p>Logs a debug message.</p>
 </div>
 
 
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-<div class="table-container">
-    <table class="props table">
-        <thead>
-        <tr>
-            
-            <th>Name</th>
-            
-
-            <th>Type</th>
-
-            
-            <th>Attributes</th>
-            
-
-            
-
-            <th class="last">Description</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>ttl</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type">string</code>
-
-
-    
-    </td>
-
-    
-        <td class="attributes">
-        
-            &lt;optional><br>
-        
-
-        
-        </td>
-    
-
-    
-
-    <td class="description last"><p>The time to live value indicates the number of seconds the system access point will wait for a message before it assumes the device to be unresponsive.</p></td>
-</tr>
-
-        
-            
-<tr class="deep-level-0">
-    
-        <td class="name"><code>displayname</code></td>
-    
-
-    <td class="type">
-    
-        
-<code class="param-type">string</code>
-
-
-    
-    </td>
-
-    
-        <td class="attributes">
-        
-            &lt;optional><br>
-        
-
-        
-        </td>
-    
-
-    
-
-    <td class="description last"><p>The display name for the virtual device.</p></td>
-</tr>
-
-        
-        </tbody>
-    </table>
-</div>
 
 
 
@@ -338,9 +243,9 @@
 
     
         <p class="tag-source">
-            <a href="model_virtual-device.ts.html" class="button">View Source</a>
+            <a href="model_logger.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_virtual-device.ts.html">model/virtual-device.ts</a>, <a href="model_virtual-device.ts.html#line90">line 90</a>
+                <a href="model_logger.ts.html">model/logger.ts</a>, <a href="model_logger.ts.html#line7">line 7</a>
             </span>
         </p>
     
@@ -357,16 +262,16 @@
     <span class="method-parameter is-pulled-right">
         <label>Type:</label>
         
-<code class="param-type"><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></code>
+<code class="param-type">function</code>
 
 
     </span>
 
-<h4 class="name" id="type">
-    <a class="href-link" href="#type">#</a>
+<h4 class="name" id="error">
+    <a class="href-link" href="#error">#</a>
     
     <span class="code-name">
-        type
+        error
     </span>
     
 </h4>
@@ -375,7 +280,7 @@
 
 
 <div class="description">
-    <p>The virtual device type.</p>
+    <p>Logs a error message.</p>
 </div>
 
 
@@ -415,9 +320,163 @@
 
     
         <p class="tag-source">
-            <a href="model_virtual-device.ts.html" class="button">View Source</a>
+            <a href="model_logger.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_virtual-device.ts.html">model/virtual-device.ts</a>, <a href="model_virtual-device.ts.html#line86">line 86</a>
+                <a href="model_logger.ts.html">model/logger.ts</a>, <a href="model_logger.ts.html#line14">line 14</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">function</code>
+
+
+    </span>
+
+<h4 class="name" id="log">
+    <a class="href-link" href="#log">#</a>
+    
+    <span class="code-name">
+        log
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Logs a informational message.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="model_logger.ts.html" class="button">View Source</a>
+            <span>
+                <a href="model_logger.ts.html">model/logger.ts</a>, <a href="model_logger.ts.html#line21">line 21</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+</div>
+            
+                <div class="member">
+
+    <span class="method-parameter is-pulled-right">
+        <label>Type:</label>
+        
+<code class="param-type">function</code>
+
+
+    </span>
+
+<h4 class="name" id="warn">
+    <a class="href-link" href="#warn">#</a>
+    
+    <span class="code-name">
+        warn
+    </span>
+    
+</h4>
+
+
+
+
+<div class="description">
+    <p>Logs a warning message.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="model_logger.ts.html" class="button">View Source</a>
+            <span>
+                <a href="model_logger.ts.html">model/logger.ts</a>, <a href="model_logger.ts.html#line28">line 28</a>
             </span>
         </p>
     

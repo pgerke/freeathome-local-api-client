@@ -22,6 +22,7 @@ npm install --save freeathome-local-api-client
 - The complete local API is supported!
 - Read the configuration, the device list and any datapoint offered by any device connected to the system
 - Control your devices by setting new values for data points
+- Hybrid library supporting ESM as well as CommonJS
 - 100% covered by automated unit tests
 
 ## Usage Requirements
@@ -32,7 +33,7 @@ npm install --save freeathome-local-api-client
 ## Documentation
 
 The client library is documented using JSDoc, the generated documentation is available at https://pgerke.github.io/freeathome-local-api-client/.
-There is also a sample project illustrating the use of the library can be found at https://github.com/pgerke/freeathome-local-api-sample.
+There is also a sample project illustrating the use of the library can be found at https://github.com/pgerke/freeathome-local-api-sample. It illustrates usage for ESM as well as CommonJs.
 
 ## I found a bug, what do I do?
 
