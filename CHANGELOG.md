@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- [PG-183](https://pgerke.atlassian.net/browse/PG-183):
+  Add interface checkers for device and channel
 - [PG-172](https://pgerke.atlassian.net/browse/PG-172):
   Support injection of external logger instance
 - [PG-175](https://pgerke.atlassian.net/browse/PG-175):
