@@ -22,6 +22,7 @@ export {
   isDeviceResponse,
   isGetDataPointResponse,
   isSetDataPointResponse,
+  isVirtualDeviceResponse,
   isWebSocketMessage,
 } from "./validator";
 export { VirtualDevice, VirtualDeviceType } from "./virtual-device";

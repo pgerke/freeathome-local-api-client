@@ -6,21 +6,19 @@ import {
   DeviceResponse,
   GetDataPointResponse,
   isConfiguration,
+  isChannel,
+  isDevice,
   isDeviceList,
   isDeviceResponse,
   isGetDataPointResponse,
   isSetDataPointResponse,
+  isVirtualDeviceResponse,
   isWebSocketMessage,
   Logger,
   SetDataPointResponse,
   VirtualDeviceResponse,
   WebSocketMessage,
 } from "../src/model";
-import {
-  isChannel,
-  isDevice,
-  isVirtualDeviceResponse,
-} from "../src/model/validator";
 import { originalTimeout } from "../test";
 
 const logger: Logger = console;

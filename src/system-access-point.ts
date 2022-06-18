@@ -1,5 +1,6 @@
 import { Observable, Subject } from "rxjs";
 import { ClientOptions, RawData, WebSocket } from "ws";
+import { EventEmitter } from "events";
 import {
   Configuration,
   DeviceList,
@@ -23,7 +24,7 @@ import { isVirtualDeviceResponse } from "./model/validator";
 type HttpRequestMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
 /** The class representing a System Access Point. */
-export class SystemAccessPoint {
+export class SystemAccessPoint extends EventEmitter {
   /** The basic authentication key used for requests. */
   public readonly basicAuthKey: string;
   /** The host name of the system access point. */
@@ -54,6 +55,8 @@ export class SystemAccessPoint {
     verboseErrors = false,
     logger?: Logger
   ) {
+    super();
+
     // Configure logging
     this.logger = logger ?? console;
 
@@ -119,26 +122,38 @@ export class SystemAccessPoint {
       },
     };
     const webSocket = new WebSocket(url, options);
-    webSocket.on("error", (error: Error) =>
-      this.logger.error("Error received", error)
-    );
-    webSocket.on("ping", (data: Buffer) =>
-      this.logger.debug("Ping received", data.toString("ascii"))
-    );
-    webSocket.on("pong", (data: Buffer) =>
-      this.logger.debug("Pong received", data.toString("ascii"))
-    );
-    webSocket.on("unexpected-response", () =>
-      this.logger.error("Unexpected response received")
-    );
-    webSocket.on("upgrade", () =>
-      this.logger.debug("Upgrade request received")
-    );
-    webSocket.on("open", () => this.logger.log("Connection opened"));
-    webSocket.on("close", () => this.logger.log("Connection closed"));
-    webSocket.on("message", (data: RawData, isBinary: boolean) =>
-      this.processWebSocketMessage(data, isBinary)
-    );
+    webSocket.on("error", (error: Error) => {
+      this.emit("websocket-error", error);
+      this.logger.error("Error received", error);
+    });
+    webSocket.on("ping", (data: Buffer) => {
+      this.emit("websocket-ping", data);
+      this.logger.debug("Ping received", data.toString("ascii"));
+    });
+    webSocket.on("pong", (data: Buffer) => {
+      this.emit("websocket-pong", data);
+      this.logger.debug("Pong received", data.toString("ascii"));
+    });
+    webSocket.on("unexpected-response", (request, response) => {
+      this.emit("websocket-unexpected-response", request, response);
+      this.logger.error("Unexpected response received");
+    });
+    webSocket.on("upgrade", (request) => {
+      this.emit("websocket-upgrade", request);
+      this.logger.debug("Upgrade request received");
+    });
+    webSocket.on("open", () => {
+      this.emit("websocket-open");
+      this.logger.log("Connection opened");
+    });
+    webSocket.on("close", (code, reason) => {
+      this.emit("websocket-close", code, reason);
+      this.logger.log("Connection closed");
+    });
+    webSocket.on("message", (data: RawData, isBinary: boolean) => {
+      this.emit("websocket-message", data, isBinary);
+      this.processWebSocketMessage(data, isBinary);
+    });
     return webSocket;
   }
 
