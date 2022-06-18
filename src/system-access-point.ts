@@ -1,5 +1,6 @@
 import { Observable, Subject } from "rxjs";
-import { ClientOptions, EventEmitter, RawData, WebSocket } from "ws";
+import { ClientOptions, RawData, WebSocket } from "ws";
+import { EventEmitter } from "events";
 import {
   Configuration,
   DeviceList,

@@ -83,7 +83,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isChannel">isChannel</a></li><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDevice">isDevice</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
                 
             </nav>
         </div>
@@ -248,6 +248,229 @@
         <div class='vertical-section'>
             <h1>Methods</h1>
             <div class="members">
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isChannel">
+        <a class="href-link" href="#isChannel">#</a>
+        
+        <span class="code-name">
+            
+                isChannel<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Determines whether the specified object is a channel.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>obj</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The object to be tested</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>verbose</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">boolean</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Determines whether validation errors shall be logged. Default value is false.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="model_validator.ts.html" class="button">View Source</a>
+            <span>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line103">line 103</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A value indicating whether the specified object is a channel.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
             
                 <div class="member">
 
@@ -419,7 +642,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line41">line 41</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line43">line 43</a>
             </span>
         </p>
     
@@ -451,6 +674,229 @@
 <div class="columns">
     
     <div class='param-desc column is-7'><p>A value indicating whether the specified object is a configuration.</p></div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<code class="param-type">boolean</code>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
+
+
+
+</div>
+            
+                <div class="member">
+
+
+    
+    <h4 class="name" id="isDevice">
+        <a class="href-link" href="#isDevice">#</a>
+        
+        <span class="code-name">
+            
+                isDevice<span class="signature">(obj, logger, verbose)</span><span class="type-signature"> &rarr; {boolean}</span>
+            
+        </span>
+    </h4>
+    
+
+    
+    
+    <div class="description">
+        <p>Determines whether the specified object is a device.</p>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+<div class="table-container">
+    <table class="params table">
+        <thead>
+        <tr>
+            
+            <th>Name</th>
+            
+
+            <th>Type</th>
+
+            
+
+            
+
+            <th class="last">Description</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>obj</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">object</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The object to be tested</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>logger</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type"><a href="Logger.html">Logger</a></code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>The logger instance to be used.</p></td>
+</tr>
+
+
+        
+
+            
+<tr class="deep-level-0">
+  
+      <td class="name"><code>verbose</code></td>
+  
+
+  <td class="type">
+  
+      
+<code class="param-type">boolean</code>
+
+
+  
+  </td>
+
+  
+
+  
+
+  <td class="description last"><p>Determines whether validation errors shall be logged. Default value is false.</p></td>
+</tr>
+
+
+        
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="model_validator.ts.html" class="button">View Source</a>
+            <span>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line113">line 113</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'><p>A value indicating whether the specified object is a device.</p></div>
     
     
     <div class='column is-5 has-text-left'>
@@ -642,7 +1088,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line51">line 51</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line53">line 53</a>
             </span>
         </p>
     
@@ -865,7 +1311,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line61">line 61</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line63">line 63</a>
             </span>
         </p>
     
@@ -1088,7 +1534,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line71">line 71</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line73">line 73</a>
             </span>
         </p>
     
@@ -1311,7 +1757,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line81">line 81</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line83">line 83</a>
             </span>
         </p>
     
@@ -1534,7 +1980,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line91">line 91</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line93">line 93</a>
             </span>
         </p>
     
@@ -1757,7 +2203,7 @@
         <p class="tag-source">
             <a href="model_validator.ts.html" class="button">View Source</a>
             <span>
-                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line31">line 31</a>
+                <a href="model_validator.ts.html">model/validator.ts</a>, <a href="model_validator.ts.html#line33">line 33</a>
             </span>
         </p>
     
@@ -1896,7 +2342,7 @@
         <p class="tag-source">
             <a href="system-access-point.ts.html" class="button">View Source</a>
             <span>
-                <a href="system-access-point.ts.html">system-access-point.ts</a>, <a href="system-access-point.ts.html#line262">line 262</a>
+                <a href="system-access-point.ts.html">system-access-point.ts</a>, <a href="system-access-point.ts.html#line289">line 289</a>
             </span>
         </p>
     

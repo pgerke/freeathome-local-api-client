@@ -85,7 +85,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isChannel">isChannel</a></li><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDevice">isDevice</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
                 
             </nav>
         </div>
@@ -104,6 +104,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>import { Observable, Subject } from "rxjs";
 import { ClientOptions, RawData, WebSocket } from "ws";
+import { EventEmitter } from "events";
 import {
   Configuration,
   DeviceList,
@@ -127,7 +128,7 @@ import { isVirtualDeviceResponse } from "./model/validator";
 type HttpRequestMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
 /** The class representing a System Access Point. */
-export class SystemAccessPoint {
+export class SystemAccessPoint extends EventEmitter {
   /** The basic authentication key used for requests. */
   public readonly basicAuthKey: string;
   /** The host name of the system access point. */
@@ -158,6 +159,8 @@ export class SystemAccessPoint {
     verboseErrors = false,
     logger?: Logger
   ) {
+    super();
+
     // Configure logging
     this.logger = logger ?? console;
 
@@ -223,26 +226,38 @@ export class SystemAccessPoint {
       },
     };
     const webSocket = new WebSocket(url, options);
-    webSocket.on("error", (error: Error) =>
-      this.logger.error("Error received", error)
-    );
-    webSocket.on("ping", (data: Buffer) =>
-      this.logger.debug("Ping received", data.toString("ascii"))
-    );
-    webSocket.on("pong", (data: Buffer) =>
-      this.logger.debug("Pong received", data.toString("ascii"))
-    );
-    webSocket.on("unexpected-response", () =>
-      this.logger.error("Unexpected response received")
-    );
-    webSocket.on("upgrade", () =>
-      this.logger.debug("Upgrade request received")
-    );
-    webSocket.on("open", () => this.logger.log("Connection opened"));
-    webSocket.on("close", () => this.logger.log("Connection closed"));
-    webSocket.on("message", (data: RawData, isBinary: boolean) =>
-      this.processWebSocketMessage(data, isBinary)
-    );
+    webSocket.on("error", (error: Error) => {
+      this.emit("websocket-error", error);
+      this.logger.error("Error received", error);
+    });
+    webSocket.on("ping", (data: Buffer) => {
+      this.emit("websocket-ping", data);
+      this.logger.debug("Ping received", data.toString("ascii"));
+    });
+    webSocket.on("pong", (data: Buffer) => {
+      this.emit("websocket-pong", data);
+      this.logger.debug("Pong received", data.toString("ascii"));
+    });
+    webSocket.on("unexpected-response", (request, response) => {
+      this.emit("websocket-unexpected-response", request, response);
+      this.logger.error("Unexpected response received");
+    });
+    webSocket.on("upgrade", (request) => {
+      this.emit("websocket-upgrade", request);
+      this.logger.debug("Upgrade request received");
+    });
+    webSocket.on("open", () => {
+      this.emit("websocket-open");
+      this.logger.log("Connection opened");
+    });
+    webSocket.on("close", (code, reason) => {
+      this.emit("websocket-close", code, reason);
+      this.logger.log("Connection closed");
+    });
+    webSocket.on("message", (data: RawData, isBinary: boolean) => {
+      this.emit("websocket-message", data, isBinary);
+      this.processWebSocketMessage(data, isBinary);
+    });
     return webSocket;
   }
 
