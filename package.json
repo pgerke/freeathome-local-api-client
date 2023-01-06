@@ -1,6 +1,6 @@
 {
   "name": "freeathome-local-api-client",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "preview": true,
   "description": "A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript",
   "repository": {
@@ -50,35 +50,35 @@
     "docs": "rimraf docs && jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "rxjs": "^7.5.7",
+    "rxjs": "^7.8.0",
     "ts-interface-checker": "^1.0.2",
     "ws": "^8.11.0"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@types/jasmine": "^4.3.0",
+    "@types/jasmine": "^4.3.1",
     "@types/webpack": "^5.28.0",
-    "@types/ws": "^8.5.3",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
+    "@types/ws": "^8.5.4",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
     "better-docs": "^2.7.2",
-    "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint": "^8.31.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-n": "^15.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "jasmine": "^4.5.0",
     "jasmine-spec-reporter": "^7.0.0",
     "jsdoc": "^3.6.11",
     "nyc": "^15.1.0",
-    "prettier": "^2.8.0",
+    "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-interface-builder": "^0.3.3",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.3",
+    "typescript": "^4.9.4",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.0"
+    "webpack-cli": "^5.0.1"
   }
 }
