@@ -114,7 +114,7 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
       - name: Run unit test
-        run: npm run test:coverage
+        run: npm run test:ci
       - name: Upload to Codecov
         uses: codecov/codecov-action@v3.1.0
         with:
