@@ -404,6 +404,7 @@ export class SystemAccessPoint extends EventEmitter {
      * The message is expected to be deserializable as a web socket message.
      * If that is not the case, that's an error case.
      */
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     const serialized = data.toString();
     const message: unknown = JSON.parse(serialized);
 
