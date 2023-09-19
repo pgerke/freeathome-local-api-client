@@ -1,16 +1,19 @@
-import { array, iface, indexKey, ITypeSuite } from "ts-interface-checker";
+import { array, iface, indexKey, ITypeSuite, opt } from "ts-interface-checker";
 
 const WebSocketMessage = iface([], {
   [indexKey]: iface([], {
     datapoints: iface([], {
       [indexKey]: "string",
     }),
-    devices: iface([], {
-      [indexKey]: "Devices",
-    }),
+    devices: "Devices",
     devicesAdded: array("string"),
     devicesRemoved: array("string"),
     scenesTriggered: "ScenesTriggered",
+    parameters: opt(
+      iface([], {
+        [indexKey]: "string",
+      })
+    ),
   }),
 });
 

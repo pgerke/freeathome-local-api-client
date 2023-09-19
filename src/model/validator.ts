@@ -15,6 +15,7 @@ import {
   UsersTypeSuite,
   ErrorTypeSuite,
   DeviceResponseTypeSuite,
+  VirtualDeviceTypeSuite,
   VirtualDeviceResponseTypeSuite,
 } from "./validation";
 import { Checker, createCheckers } from "ts-interface-checker";
@@ -27,6 +28,7 @@ import { DeviceResponse as DevResponse } from "./device-response";
 import { GetDataPointResponse as GetResponse } from "./get-data-point-response";
 import { SetDataPointResponse as SetResponse } from "./set-data-point-response";
 import { VirtualDeviceResponse as VDeviceResponse } from "./virtual-device-response";
+import { VirtualDevice as VDevice } from "./virtual-device";
 import { Logger } from "./logger";
 
 const { Channel } = createCheckers(ChannelTypeSuite, InOutPutTypeSuite);
@@ -63,6 +65,8 @@ const { DeviceResponse } = createCheckers(
 const { GetDataPointResponse } = createCheckers(GetDataPointResponseTypeSuite);
 
 const { SetDataPointResponse } = createCheckers(SetDataPointResponseTypeSuite);
+
+const { VirtualDevice } = createCheckers(VirtualDeviceTypeSuite);
 
 const { VirtualDeviceResponse } = createCheckers(
   VirtualDeviceResponseTypeSuite
@@ -184,6 +188,21 @@ export function isSetDataPointResponse(
   verbose = false
 ): obj is SetResponse {
   return check(obj, SetDataPointResponse, logger, verbose);
+}
+
+/**
+ * Determines whether the specified object is a virtual device.
+ * @param obj {object} The object to be tested
+ * @param logger {Logger} The logger instance to be used.
+ * @param verbose {boolean} Determines whether validation errors shall be logged. Default value is false.
+ * @returns {boolean} A value indicating whether the specified object is a virtual device.
+ */
+export function isVirtualDevice(
+  obj: unknown,
+  logger: Logger,
+  verbose = false
+): obj is VDevice {
+  return check(obj, VirtualDevice, logger, verbose);
 }
 
 /**

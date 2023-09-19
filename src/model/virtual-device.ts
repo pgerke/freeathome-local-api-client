@@ -8,6 +8,10 @@ export interface VirtualDevice {
     ttl?: string;
     /** The display name for the virtual device. */
     displayname?: string;
+    /** The virtual device flavor. */
+    flavor?: string;
+    /** The virtual device capabilities. */
+    capabilities?: Array<number>;
   };
 }
 
@@ -89,4 +93,9 @@ export enum VirtualDeviceType {
   AirQualityTemperature = "AirQualityTemperature",
   /** An air quality sensor measuring volatile organic compounds */
   AirQualityVOC = "AirQualityVOC",
+  /** A version 2 energy meter */
+  EnergyMeterV2 = "EnergyMeterv2",
+  HomeApplianceLaundry = "HomeAppliance-Laundry",
+  HVAC = "HVAC",
+  SplitUnit = "SplitUnit",
 }

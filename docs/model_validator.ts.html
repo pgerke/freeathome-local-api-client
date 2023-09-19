@@ -85,7 +85,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#isChannel">isChannel</a></li><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDevice">isDevice</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SystemAccessPoint.html">SystemAccessPoint</a></li><li><a href="SystemAccessPoint_SystemAccessPoint.html">SystemAccessPoint</a></li></ul><h3>Interfaces</h3><ul><li><a href="Channel.html">Channel</a></li><li><a href="Configuration.html">Configuration</a></li><li><a href="Device.html">Device</a></li><li><a href="DeviceList.html">DeviceList</a></li><li><a href="DeviceResponse.html">DeviceResponse</a></li><li><a href="Devices.html">Devices</a></li><li><a href="Error.html">Error</a></li><li><a href="Floors.html">Floors</a></li><li><a href="GetDataPointResponse.html">GetDataPointResponse</a></li><li><a href="InOutPut.html">InOutPut</a></li><li><a href="Logger.html">Logger</a></li><li><a href="Rooms.html">Rooms</a></li><li><a href="ScenesTriggered.html">ScenesTriggered</a></li><li><a href="SetDataPointResponse.html">SetDataPointResponse</a></li><li><a href="SysAP.html">SysAP</a></li><li><a href="Users.html">Users</a></li><li><a href="VirtualDevice.html">VirtualDevice</a></li><li><a href="VirtualDeviceResponse.html">VirtualDeviceResponse</a></li><li><a href="WebSocketMessage.html">WebSocketMessage</a></li></ul><h3>Global</h3><ul><li><a href="global.html#VirtualDeviceType">VirtualDeviceType</a></li><li><a href="global.html#isChannel">isChannel</a></li><li><a href="global.html#isConfiguration">isConfiguration</a></li><li><a href="global.html#isDevice">isDevice</a></li><li><a href="global.html#isDeviceList">isDeviceList</a></li><li><a href="global.html#isDeviceResponse">isDeviceResponse</a></li><li><a href="global.html#isGetDataPointResponse">isGetDataPointResponse</a></li><li><a href="global.html#isSetDataPointResponse">isSetDataPointResponse</a></li><li><a href="global.html#isVirtualDevice">isVirtualDevice</a></li><li><a href="global.html#isVirtualDeviceResponse">isVirtualDeviceResponse</a></li><li><a href="global.html#isWebSocketMessage">isWebSocketMessage</a></li></ul></div>
                 
             </nav>
         </div>
@@ -119,6 +119,7 @@
   UsersTypeSuite,
   ErrorTypeSuite,
   DeviceResponseTypeSuite,
+  VirtualDeviceTypeSuite,
   VirtualDeviceResponseTypeSuite,
 } from "./validation";
 import { Checker, createCheckers } from "ts-interface-checker";
@@ -131,6 +132,7 @@ import { DeviceResponse as DevResponse } from "./device-response";
 import { GetDataPointResponse as GetResponse } from "./get-data-point-response";
 import { SetDataPointResponse as SetResponse } from "./set-data-point-response";
 import { VirtualDeviceResponse as VDeviceResponse } from "./virtual-device-response";
+import { VirtualDevice as VDevice } from "./virtual-device";
 import { Logger } from "./logger";
 
 const { Channel } = createCheckers(ChannelTypeSuite, InOutPutTypeSuite);
@@ -167,6 +169,8 @@ const { DeviceResponse } = createCheckers(
 const { GetDataPointResponse } = createCheckers(GetDataPointResponseTypeSuite);
 
 const { SetDataPointResponse } = createCheckers(SetDataPointResponseTypeSuite);
+
+const { VirtualDevice } = createCheckers(VirtualDeviceTypeSuite);
 
 const { VirtualDeviceResponse } = createCheckers(
   VirtualDeviceResponseTypeSuite
@@ -291,6 +295,21 @@ export function isSetDataPointResponse(
 }
 
 /**
+ * Determines whether the specified object is a virtual device.
+ * @param obj {object} The object to be tested
+ * @param logger {Logger} The logger instance to be used.
+ * @param verbose {boolean} Determines whether validation errors shall be logged. Default value is false.
+ * @returns {boolean} A value indicating whether the specified object is a virtual device.
+ */
+export function isVirtualDevice(
+  obj: unknown,
+  logger: Logger,
+  verbose = false
+): obj is VDevice {
+  return check(obj, VirtualDevice, logger, verbose);
+}
+
+/**
  * Determines whether the specified object is a virtual device response.
  * @param obj {object} The object to be tested
  * @param logger {Logger} The logger instance to be used.
@@ -345,7 +364,7 @@ export function isDevice(
             
             <footer class="footer">
                 <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a></p>
                     <p class="sidebar-created-by">
                         <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by
                         <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
