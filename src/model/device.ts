@@ -17,4 +17,9 @@ export interface Device {
     /** The channel identified by a string key. */
     [key: string]: Channel;
   };
+  /** The device parameters. */
+  parameters?: {
+    /** The parameter identified by a string key. */
+    [key: string]: string;
+  };
 }

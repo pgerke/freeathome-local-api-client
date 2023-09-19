@@ -20,6 +20,11 @@ export interface Channel {
     /** The output identified by a string key. */
     [key: string]: InOutPut;
   };
+  /** The channel parameters. */
+  parameters?: {
+    /** The channel parameters identified by a string key. */
+    [key: string]: string;
+  };
   /** The channel type. */
   type?: string;
 }

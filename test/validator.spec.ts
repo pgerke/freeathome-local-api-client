@@ -12,12 +12,15 @@ import {
   isDeviceResponse,
   isGetDataPointResponse,
   isSetDataPointResponse,
+  isVirtualDevice,
   isVirtualDeviceResponse,
   isWebSocketMessage,
   Logger,
   SetDataPointResponse,
   VirtualDeviceResponse,
   WebSocketMessage,
+  VirtualDevice,
+  VirtualDeviceType,
 } from "../src/model";
 import { originalTimeout } from "../test";
 
@@ -39,6 +42,12 @@ describe("Validator", () => {
         scenesTriggered: {},
       },
     };
+    expect(isWebSocketMessage(obj, logger, true)).toBeTrue();
+  });
+
+  it("should verify a valid web socket message with parameters", () => {
+    const serialized = `{"00000000-0000-0000-0000-000000000000": {"datapoints": {},"parameters": {},"devices": {"ABB7F62ADEC4": {"floor": "01","room": "02","interface": "RF","displayName": "Universalmelder","unresponsive": false,"unresponsiveCounter": 2,"defect": false,"channels": {"ch0000": {"displayName": "Universalmelder","functionID": "f","inputs": {},"outputs": {"odp0000": {"pairingID": 53,"value": "0"}},"parameters": {}},"ch0002": {"floor": "01","room": "02","displayName": "ⓐ","functionID": "0","inputs": {"idp0000": {"pairingID": 256,"value": "0"}},"outputs": {"odp0000": {"pairingID": 1,"value": "1"}},"parameters": {"par0010": "1","par0043": "3"}}},"parameters": {"par0038": "4294967282","par0065": "0"}}},"devicesAdded": [],"devicesRemoved": [],"scenesTriggered": {}}}`;
+    const obj: WebSocketMessage = JSON.parse(serialized) as WebSocketMessage;
     expect(isWebSocketMessage(obj, logger, true)).toBeTrue();
   });
 
@@ -238,6 +247,45 @@ describe("Validator", () => {
       },
     };
     expect(isSetDataPointResponse(obj, logger, true)).toBeFalse();
+    expect(spy).toHaveBeenCalledWith(
+      "Object validation failed!",
+      jasmine.anything()
+    );
+  });
+
+  it("should verify a valid virtual device", () => {
+    const obj: VirtualDevice = {
+      type: VirtualDeviceType.BinarySensor,
+      properties: {
+        ttl: "180",
+        displayname: "Test",
+      },
+    };
+
+    expect(isVirtualDevice(obj, logger, true)).toBeTrue();
+  });
+
+  it("should fail verification for an invalid virtual device", () => {
+    const obj = {
+      properties: {
+        ttl: "180",
+        displayname: "Test",
+      },
+    };
+
+    expect(isVirtualDevice(obj, logger)).toBeFalse();
+  });
+
+  it("should throw an error during verification for an invalid virtual device in verbose mode", () => {
+    const spy = spyOn(console, "error");
+    const obj = {
+      properties: {
+        ttl: "180",
+        displayname: "Test",
+      },
+    };
+
+    expect(isVirtualDevice(obj, logger, true)).toBeFalse();
     expect(spy).toHaveBeenCalledWith(
       "Object validation failed!",
       jasmine.anything()

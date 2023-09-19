@@ -13,5 +13,6 @@ export { ScenesTriggeredTypeSuite } from "./scenes-triggered-ti";
 export { SetDataPointResponseTypeSuite } from "./set-data-point-response-ti";
 export { SysApTypeSuite } from "./sys-ap-ti";
 export { UsersTypeSuite } from "./users-ti";
+export { VirtualDeviceTypeSuite } from "./virtual-device-ti";
 export { VirtualDeviceResponseTypeSuite } from "./virtual-device-response-ti";
 export { WebSocketMessageTypeSuite } from "./websocket-message-ti";

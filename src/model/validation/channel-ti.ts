@@ -15,6 +15,11 @@ const Channel = iface([], {
       [indexKey]: "InOutPut",
     })
   ),
+  parameters: opt(
+    iface([], {
+      [indexKey]: "string",
+    })
+  ),
   type: opt("string"),
 });
 

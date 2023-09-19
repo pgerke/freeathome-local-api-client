@@ -11,6 +11,11 @@ const Device = iface([], {
       [indexKey]: "Channel",
     })
   ),
+  parameters: opt(
+    iface([], {
+      [indexKey]: "string",
+    })
+  ),
 });
 
 export const DeviceTypeSuite: ITypeSuite = {
