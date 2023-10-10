@@ -1,6 +1,6 @@
 {
   "name": "freeathome-local-api-client",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "preview": true,
   "description": "A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript",
   "repository": {
@@ -52,17 +52,17 @@
   "dependencies": {
     "rxjs": "^7.8.1",
     "ts-interface-checker": "^1.0.2",
-    "ws": "^8.14.1"
+    "ws": "^8.14.2"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@types/jasmine": "^4.3.6",
-    "@types/webpack": "^5.28.2",
-    "@types/ws": "^8.5.5",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
+    "@types/jasmine": "^5.1.0",
+    "@types/webpack": "^5.28.3",
+    "@types/ws": "^8.5.6",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "better-docs": "github:drazisil/better-docs#dfbd2e3158f119d247c2efbf72acc79d1ec4db5c",
-    "eslint": "^8.49.0",
+    "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-n": "^16.1.0",
@@ -73,9 +73,9 @@
     "jsdoc": "^4.0.2",
     "nyc": "^15.1.0",
     "prettier": "^3.0.3",
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.5",
     "ts-interface-builder": "^0.3.3",
-    "ts-loader": "^9.4.4",
+    "ts-loader": "^9.5.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",
