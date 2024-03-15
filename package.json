@@ -1,6 +1,6 @@
 {
   "name": "freeathome-local-api-client",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "preview": true,
   "description": "A client library for the BUSCH-JAEGER free@home local API implemented in TypeScript",
   "repository": {
@@ -59,10 +59,10 @@
     "@types/jasmine": "^5.1.4",
     "@types/webpack": "^5.28.5",
     "@types/ws": "^8.5.10",
-    "@typescript-eslint/eslint-plugin": "^6.19.1",
-    "@typescript-eslint/parser": "^6.19.1",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
     "better-docs": "github:drazisil/better-docs#dfbd2e3158f119d247c2efbf72acc79d1ec4db5c",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
@@ -72,13 +72,13 @@
     "jasmine-spec-reporter": "^7.0.0",
     "jsdoc": "^4.0.2",
     "nyc": "^15.1.0",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "ts-interface-builder": "^0.3.3",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "webpack": "^5.90.0",
+    "typescript": "^5.4.2",
+    "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
   }
 }
