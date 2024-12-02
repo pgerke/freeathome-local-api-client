@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.4.10 - 02.12.2024
+
+### Changed
+
+- [#59](https://github.com/pgerke/freeathome-local-api-client/issues/59):
+  Migrate build system from webpack to tsup
+- [#59](https://github.com/pgerke/freeathome-local-api-client/issues/59):
+  Bump dependencies and migrate to latest ESLint
+- [#59](https://github.com/pgerke/freeathome-local-api-client/issues/59):
+  Upgrade GitHub Actions
+
 ## 1.4.9 - 24.08.2024
 
 ### Changed

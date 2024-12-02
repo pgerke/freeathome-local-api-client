@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015"
-  },
-  "include": ["src", "webpack.cjs.config.js"]
-}

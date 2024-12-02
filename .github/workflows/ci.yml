@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create cache if changed
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: node_modules
@@ -32,9 +32,9 @@ jobs:
     needs: dependencies
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Load dependencies from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: node_modules
@@ -47,7 +47,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dist
           path: dist
@@ -59,9 +59,9 @@ jobs:
     needs: dependencies
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Load dependencies from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: node_modules
@@ -80,9 +80,9 @@ jobs:
     needs: dependencies
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Load dependencies from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: node_modules
@@ -101,9 +101,9 @@ jobs:
     needs: dependencies
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Load dependencies from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: npm-cache
         with:
           path: node_modules
@@ -116,6 +116,6 @@ jobs:
       - name: Run unit test
         run: npm run test:ci
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v3.1.0
+        uses: codecov/codecov-action@v5
         with:
           directory: ./coverage           

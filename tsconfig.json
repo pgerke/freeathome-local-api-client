@@ -1,20 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "ES2022",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node10",
+    "declaration": true,
+    "declarationMap": true,
     "outDir": "dist",
-    "lib": ["ES6", "DOM"],
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "alwaysStrict": true,
     "checkJs": true,
-    "declaration": true,
-    "declarationMap": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "moduleResolution": "node",
+    "incremental": false,
     "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
@@ -26,6 +25,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src", "fixup.js", "webpack.*.config.js"],
+  "include": ["src"],
   "exclude": ["node_modules", "dist", "test", "docs"]
 }
