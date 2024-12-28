@@ -32,7 +32,7 @@ export class SystemAccessPoint extends EventEmitter {
   /** Determines whether requests to the system access point will use TLS. */
   public readonly tlsEnabled: boolean;
   private readonly logger: Logger;
-  private verboseErrors: boolean;
+  private readonly verboseErrors: boolean;
   private webSocket?: WebSocket;
   private readonly webSocketMessageSubject = new Subject<WebSocketMessage>();
 
