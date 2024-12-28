@@ -4,6 +4,7 @@ A client library for the BUSCH-JAEGER free@home local API implemented in TypeScr
 
 ![CI](https://img.shields.io/github/actions/workflow/status/pgerke/freeathome-local-api-client/ci.yml?style=flat-square)
 [![codecov](https://codecov.io/gh/pgerke/freeathome-local-api-client/branch/main/graph/badge.svg?token=UJQVXZ5PPM)](https://codecov.io/gh/pgerke/freeathome-local-api-client)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=pgerke_freeathome-local-api-client)](https://sonarcloud.io/summary/new_code?id=pgerke_freeathome-local-api-client)
 ![Dependencies](https://img.shields.io/librariesio/release/npm/freeathome-local-api-client?style=flat-square)
 ![npm](https://img.shields.io/npm/v/freeathome-local-api-client?style=flat-square)
 ![License](https://img.shields.io/github/license/pgerke/freeathome-local-api-client?style=flat-square)
