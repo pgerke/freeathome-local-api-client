@@ -115,7 +115,19 @@ jobs:
         run: npm ci
       - name: Run unit test
         run: npm run test:ci
-      - name: Upload to Codecov
+      - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
-          directory: ./coverage           
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: pgerke/freeathome-local-api-client
+      - name: Extract version
+        id: version-extraction
+        run: echo "APP_VERSION=$(jq -r .version package.json)" >> "$GITHUB_OUTPUT"
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectVersion=${{ steps.version-extraction.outputs.APP_VERSION }}     
