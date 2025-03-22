@@ -1,5 +1,9 @@
 on:
-  - workflow_call
+  workflow_call:
+    outputs:
+      pnpm-store-path:
+        description: "The path to the pnpm store"
+        value: ${{ jobs.cache_dependencies.outputs.pnpm-store-path }}
 
 jobs:
   cache_dependencies:
