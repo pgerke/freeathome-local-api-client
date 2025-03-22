@@ -44,39 +44,45 @@
     "clean": "rimraf dist",
     "build": "tsup --config tsup.config.ts",
     "test": "ts-node --project ./tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
-    "test:ci": "nyc npm run test",
+    "test:ci": "nyc pnpm run test",
     "lint": "eslint . --fix --max-warnings=0",
-    "prepublishOnly": "npm run lint && npm run build"
+    "prepublishOnly": "pnpm run lint && pnpm run build"
   },
   "dependencies": {
-    "rxjs": "^7.8.1",
+    "rxjs": "^7.8.2",
     "ts-interface-checker": "^1.0.2",
-    "ws": "^8.18.0"
+    "ws": "^8.18.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.17.0",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.23.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@types/jasmine": "^5.1.5",
-    "@types/ws": "^8.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
-    "eslint": "^9.17.0",
-    "eslint-config-prettier": "^9.1.0",
+    "@types/jasmine": "^5.1.7",
+    "@types/ws": "^8.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.27.0",
+    "@typescript-eslint/parser": "^8.27.0",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-n": "^17.15.1",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-n": "^17.16.2",
+    "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-promise": "^7.2.1",
-    "globals": "^15.14.0",
-    "jasmine": "^5.5.0",
+    "globals": "^16.0.0",
+    "jasmine": "^5.6.0",
     "jasmine-spec-reporter": "^7.0.0",
     "nyc": "^17.1.0",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "ts-interface-builder": "^0.3.3",
-    "ts-loader": "^9.5.1",
+    "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2"
+  },
+  "packageManager": "pnpm@10.6.5+sha512.cdf928fca20832cd59ec53826492b7dc25dc524d4370b6b4adbf65803d32efaa6c1c88147c0ae4e8d579a6c9eec715757b50d4fa35eea179d868eada4ed043af",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
