@@ -1,5 +1,5 @@
 name: "Detect commitizen version change"
-description: "Checks if the 'version' key in .cz.json has changed compared to the previous commit."
+description: "Checks if the 'version' key in package.json has changed compared to the previous commit."
 outputs:
   version_changed:
     description: "Boolean indicating if the version has changed"

@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://
 semver.org/spec/v2.0.0.html).
 
+# 1.4.12 - 22.03.2025
+
+### Added
+
+- [#65](https://github.com/pgerke/freeathome-local-api-client/issues/65):
+  Release workflow and development tooling enhancement
+
+### Changed
+
+- NO-TICKET: Bump dependencies
+
 # 1.4.11 - 28.12.2024
 
 ### Added
