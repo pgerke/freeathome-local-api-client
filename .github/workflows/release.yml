@@ -41,3 +41,35 @@ jobs:
           prerelease: ${{ contains(steps.extract_version.outputs.version, '-') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    name: Deploy Library
+    runs-on: ubuntu-latest
+    needs: [check_release_trigger]
+    if: ${{ needs.check_release_trigger.outputs.version_changed == 'true' && !contains(github.event.head_commit.message, '[skip deploy]') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+      - name: Restore pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ needs.cache_dependencies.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - name: Restore dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build for production
+        run: pnpm run build
+      - name: Publish to npmjs.org
+        run: |
+          pnpm publish ./dist --access public --tag latest;
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
