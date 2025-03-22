@@ -28,9 +28,12 @@ runs:
       shell: bash
       id: changelog
       run: |
-        cz ch ${{ steps.version.outputs.version }} --dry-run
         {
           echo "changelog<<EOF"
-          cz ch ${{ steps.version.outputs.version }} --dry-run
+          awk -v version=$(cz version -p) '
+          $0 ~ "^## "version" " { in_section = 1; next }
+          $0 ~ "^## " && in_section { exit }
+          in_section { print }
+        ' CHANGELOG.md
           echo "EOF"
         } >> "$GITHUB_OUTPUT"
