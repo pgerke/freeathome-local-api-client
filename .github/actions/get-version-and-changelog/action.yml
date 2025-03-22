@@ -28,6 +28,7 @@ runs:
       shell: bash
       id: changelog
       run: |
+        cz ch ${{ steps.version.outputs.version }} --dry-run
         {
           echo "changelog<<EOF"
           cz ch ${{ steps.version.outputs.version }} --dry-run
