@@ -12,7 +12,7 @@ jobs:
     name: Check if PR will trigger a Release
     runs-on: ubuntu-latest
     outputs:
-      version_changed: ${{ steps.detect_version_change.outputs.version_changed }} == "true"
+      version_changed: ${{ steps.detect_version_change.outputs.version_changed }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,13 +46,13 @@ jobs:
     name: Cache dependencies
     uses: ./.github/workflows/dependency_cache.yml
     needs: [check_release_trigger]
+    if: ${{ needs.check_release_trigger.outputs.version_changed == 'true' && !contains(github.event.head_commit.message, '[skip deploy]') }}
     secrets: inherit
 
   deploy:
     name: Deploy Library
     runs-on: ubuntu-latest
     needs: [cache_dependencies]
-    if: ${{ needs.check_release_trigger.outputs.version_changed == 'true' && !contains(github.event.head_commit.message, '[skip deploy]') }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
