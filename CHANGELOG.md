@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://
 semver.org/spec/v2.0.0.html).
 
-## [1.5.0](https://github.com/pgerke/freeathome-local-api-client/releases/tag/v1.4.17) - 11.05.2025
+## [1.5.0](https://github.com/pgerke/freeathome-local-api-client/releases/tag/v1.5.0) - 11.05.2025
 
 - Dependency bump
 - [#71](https://github.com/pgerke/freeathome-local-api-client/issues/71):
