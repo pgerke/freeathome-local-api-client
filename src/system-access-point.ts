@@ -1,22 +1,29 @@
-import { Observable, Subject } from "rxjs";
-import { ClientOptions, RawData, WebSocket } from "ws";
 import { EventEmitter } from "events";
+import {
+  interval,
+  Observable,
+  Subject,
+  Subscription,
+  switchMap,
+  takeUntil,
+} from "rxjs";
+import { ClientOptions, RawData, WebSocket } from "ws";
 import {
   Configuration,
   DeviceList,
   DeviceResponse,
   GetDataPointResponse,
+  isConfiguration,
   isDeviceList,
   isDeviceResponse,
-  isWebSocketMessage,
   isGetDataPointResponse,
   isSetDataPointResponse,
-  isConfiguration,
+  isWebSocketMessage,
+  Logger,
   SetDataPointResponse,
-  WebSocketMessage,
   VirtualDevice,
   VirtualDeviceResponse,
-  Logger,
+  WebSocketMessage,
 } from "./model";
 import { isVirtualDeviceResponse } from "./model/validator";
 
@@ -35,6 +42,14 @@ export class SystemAccessPoint extends EventEmitter {
   private readonly verboseErrors: boolean;
   private webSocket?: WebSocket;
   private readonly webSocketMessageSubject = new Subject<WebSocketMessage>();
+  private readonly webSocketKeepaliveTimerReset$ = new Subject<void>();
+  private readonly webSocketKeepaliveTimer$ =
+    this.webSocketKeepaliveTimerReset$.pipe(
+      switchMap(() =>
+        interval(30000).pipe(takeUntil(this.webSocketKeepaliveTimerReset$))
+      )
+    );
+  private webSocketKeepaliveSubscription?: Subscription;
 
   /**
    * Constructs a new SystemAccessPoint instance
@@ -56,7 +71,6 @@ export class SystemAccessPoint extends EventEmitter {
     logger?: Logger
   ) {
     super();
-
     // Configure logging
     this.logger = logger ?? console;
 
@@ -73,12 +87,20 @@ export class SystemAccessPoint extends EventEmitter {
    * Connects to the System Access Point web socket.
    * @param certificateVerification {boolean} Determines whether the TLS certificate presented by the server will be verified.
    */
-  public connectWebSocket(certificateVerification = true): void {
+  public connectWebSocket(certificateVerification: boolean = true): void {
     if (this.webSocket && this.webSocket.readyState === WebSocket.OPEN) {
       throw new Error("Web socket is already connected");
     }
 
     this.webSocket = this.createWebSocket(certificateVerification);
+    this.webSocketKeepaliveSubscription =
+      this.webSocketKeepaliveTimer$.subscribe(() => {
+        if (!(this.webSocket && this.webSocket.readyState === WebSocket.OPEN))
+          return;
+
+        this.logger.log("keepalive timer expired, sending ping message...");
+        this.webSocket.ping();
+      });
   }
 
   /**
@@ -152,6 +174,7 @@ export class SystemAccessPoint extends EventEmitter {
     });
     webSocket.on("message", (data: RawData, isBinary: boolean) => {
       this.emit("websocket-message", data, isBinary);
+      this.webSocketKeepaliveTimerReset$.next();
       this.processWebSocketMessage(data, isBinary);
     });
     return webSocket;
@@ -161,11 +184,13 @@ export class SystemAccessPoint extends EventEmitter {
    * Disconnects from the System Access Point web socket.
    * @param force {boolean} Determines whether or not the connection will be closed forcibly.
    */
-  public disconnectWebSocket(force = false): void {
+  public disconnectWebSocket(force: boolean = false): void {
     if (!this.webSocket || this.webSocket.readyState === WebSocket.CLOSED) {
       throw new Error("Web socket is not open");
     }
 
+    this.webSocketKeepaliveSubscription?.unsubscribe();
+    this.webSocketKeepaliveSubscription = undefined;
     if (force) {
       this.webSocket.terminate();
     } else {
