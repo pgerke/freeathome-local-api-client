@@ -1,22 +1,30 @@
-import { Observable, Subject } from "rxjs";
-import { ClientOptions, RawData, WebSocket } from "ws";
 import { EventEmitter } from "events";
+import {
+  interval,
+  Observable,
+  SchedulerLike,
+  Subject,
+  Subscription,
+  switchMap,
+  takeUntil,
+} from "rxjs";
+import { ClientOptions, RawData, WebSocket } from "ws";
 import {
   Configuration,
   DeviceList,
   DeviceResponse,
   GetDataPointResponse,
+  isConfiguration,
   isDeviceList,
   isDeviceResponse,
-  isWebSocketMessage,
   isGetDataPointResponse,
   isSetDataPointResponse,
-  isConfiguration,
+  isWebSocketMessage,
+  Logger,
   SetDataPointResponse,
-  WebSocketMessage,
   VirtualDevice,
   VirtualDeviceResponse,
-  Logger,
+  WebSocketMessage,
 } from "./model";
 import { isVirtualDeviceResponse } from "./model/validator";
 
@@ -27,14 +35,18 @@ type HttpRequestMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 export class SystemAccessPoint extends EventEmitter {
   /** The basic authentication key used for requests. */
   public readonly basicAuthKey: string;
-  /** The host name of the system access point. */
-  public readonly hostName: string;
-  /** Determines whether requests to the system access point will use TLS. */
-  public readonly tlsEnabled: boolean;
-  private readonly logger: Logger;
-  private readonly verboseErrors: boolean;
   private webSocket?: WebSocket;
   private readonly webSocketMessageSubject = new Subject<WebSocketMessage>();
+  private readonly webSocketKeepaliveTimerReset$ = new Subject<void>();
+  private readonly webSocketKeepaliveTimer$ =
+    this.webSocketKeepaliveTimerReset$.pipe(
+      switchMap(() =>
+        interval(30000, this.scheduler).pipe(
+          takeUntil(this.webSocketKeepaliveTimerReset$)
+        )
+      )
+    );
+  private webSocketKeepaliveSubscription?: Subscription;
 
   /**
    * Constructs a new SystemAccessPoint instance
@@ -48,37 +60,40 @@ export class SystemAccessPoint extends EventEmitter {
    * @param logger {Logger} The logger instance to be used. If no explicit implementation is provided, the this.logger will be used for logging.
    */
   constructor(
-    hostName: string,
-    userName: string,
-    password: string,
-    tlsEnabled = true,
-    verboseErrors = false,
-    logger?: Logger
+    private readonly hostName: string,
+    readonly userName: string,
+    readonly password: string,
+    private readonly tlsEnabled = true,
+    private readonly verboseErrors = false,
+    private readonly logger: Logger = console,
+    readonly scheduler?: SchedulerLike
   ) {
     super();
-
-    // Configure logging
-    this.logger = logger ?? console;
 
     // Create Basic Authentication key
     this.basicAuthKey = Buffer.from(`${userName}:${password}`, "utf8").toString(
       "base64"
     );
-    this.hostName = hostName;
-    this.tlsEnabled = tlsEnabled;
-    this.verboseErrors = verboseErrors;
   }
 
   /**
    * Connects to the System Access Point web socket.
    * @param certificateVerification {boolean} Determines whether the TLS certificate presented by the server will be verified.
    */
-  public connectWebSocket(certificateVerification = true): void {
+  public connectWebSocket(certificateVerification: boolean = true): void {
     if (this.webSocket && this.webSocket.readyState === WebSocket.OPEN) {
       throw new Error("Web socket is already connected");
     }
 
     this.webSocket = this.createWebSocket(certificateVerification);
+    this.webSocketKeepaliveSubscription =
+      this.webSocketKeepaliveTimer$.subscribe(() => {
+        if (!(this.webSocket && this.webSocket.readyState === WebSocket.OPEN))
+          return;
+
+        this.logger.log("keepalive timer expired, sending ping message...");
+        this.webSocket.ping();
+      });
   }
 
   /**
@@ -152,6 +167,7 @@ export class SystemAccessPoint extends EventEmitter {
     });
     webSocket.on("message", (data: RawData, isBinary: boolean) => {
       this.emit("websocket-message", data, isBinary);
+      this.webSocketKeepaliveTimerReset$.next();
       this.processWebSocketMessage(data, isBinary);
     });
     return webSocket;
@@ -161,11 +177,13 @@ export class SystemAccessPoint extends EventEmitter {
    * Disconnects from the System Access Point web socket.
    * @param force {boolean} Determines whether or not the connection will be closed forcibly.
    */
-  public disconnectWebSocket(force = false): void {
+  public disconnectWebSocket(force: boolean = false): void {
     if (!this.webSocket || this.webSocket.readyState === WebSocket.CLOSED) {
       throw new Error("Web socket is not open");
     }
 
+    this.webSocketKeepaliveSubscription?.unsubscribe();
+    this.webSocketKeepaliveSubscription = undefined;
     if (force) {
       this.webSocket.terminate();
     } else {
