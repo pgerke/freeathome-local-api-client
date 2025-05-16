@@ -6,14 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://
 semver.org/spec/v2.0.0.html).
 
-## [1.6.0](https://github.com/pgerke/freeathome-local-api-client/releases/tag/v1.6.0) - 13.05.2025
+## 1.6.0 - 16.05.2025
 
 ### Added
 
 - [#75](https://github.com/pgerke/freeathome-local-api-client/issues/75):
   Added a keepalive timer to the websocket connection that prevents the channel from being closed for being idle
 
-## [1.5.0](https://github.com/pgerke/freeathome-local-api-client/releases/tag/v1.5.0) - 11.05.2025
+## 1.5.0 - 11.05.2025
 
 ### Added
 
