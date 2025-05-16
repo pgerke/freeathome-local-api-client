@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import {
   interval,
   Observable,
+  SchedulerLike,
   Subject,
   Subscription,
   switchMap,
@@ -34,19 +35,15 @@ type HttpRequestMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 export class SystemAccessPoint extends EventEmitter {
   /** The basic authentication key used for requests. */
   public readonly basicAuthKey: string;
-  /** The host name of the system access point. */
-  public readonly hostName: string;
-  /** Determines whether requests to the system access point will use TLS. */
-  public readonly tlsEnabled: boolean;
-  private readonly logger: Logger;
-  private readonly verboseErrors: boolean;
   private webSocket?: WebSocket;
   private readonly webSocketMessageSubject = new Subject<WebSocketMessage>();
   private readonly webSocketKeepaliveTimerReset$ = new Subject<void>();
   private readonly webSocketKeepaliveTimer$ =
     this.webSocketKeepaliveTimerReset$.pipe(
       switchMap(() =>
-        interval(30000).pipe(takeUntil(this.webSocketKeepaliveTimerReset$))
+        interval(30000, this.scheduler).pipe(
+          takeUntil(this.webSocketKeepaliveTimerReset$)
+        )
       )
     );
   private webSocketKeepaliveSubscription?: Subscription;
@@ -63,24 +60,20 @@ export class SystemAccessPoint extends EventEmitter {
    * @param logger {Logger} The logger instance to be used. If no explicit implementation is provided, the this.logger will be used for logging.
    */
   constructor(
-    hostName: string,
-    userName: string,
-    password: string,
-    tlsEnabled = true,
-    verboseErrors = false,
-    logger?: Logger
+    private readonly hostName: string,
+    readonly userName: string,
+    readonly password: string,
+    private readonly tlsEnabled = true,
+    private readonly verboseErrors = false,
+    private readonly logger: Logger = console,
+    readonly scheduler?: SchedulerLike
   ) {
     super();
-    // Configure logging
-    this.logger = logger ?? console;
 
     // Create Basic Authentication key
     this.basicAuthKey = Buffer.from(`${userName}:${password}`, "utf8").toString(
       "base64"
     );
-    this.hostName = hostName;
-    this.tlsEnabled = tlsEnabled;
-    this.verboseErrors = verboseErrors;
   }
 
   /**

@@ -1,6 +1,7 @@
-import { SystemAccessPoint } from "../src";
-import { originalTimeout } from "../test";
+import { Subject, Subscription } from "rxjs";
+import { TestScheduler } from "rxjs/testing";
 import { RawData, WebSocket } from "ws";
+import { SystemAccessPoint } from "../src";
 import {
   Configuration,
   DeviceResponse,
@@ -11,7 +12,7 @@ import {
   VirtualDeviceType,
   WebSocketMessage,
 } from "../src/model";
-import { Subject } from "rxjs";
+import { originalTimeout } from "../test";
 
 const logger: Logger = {
   debug: jasmine.createSpy(),
@@ -21,6 +22,14 @@ const logger: Logger = {
 };
 
 describe("System Access Point", () => {
+  let testScheduler: TestScheduler;
+
+  beforeEach(() => {
+    testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+  });
+
   afterAll(() => {
     // Restore the default Jasmine timeout after the test suite.
     jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -59,11 +68,88 @@ describe("System Access Point", () => {
     spyOn(WebSocket.prototype, "send");
     const spy = spyOn(console, "warn");
     const sysAp = new SystemAccessPoint("localhost", "username", "password");
-    const instance = sysAp as unknown as { webSocket?: WebSocket };
+    const instance = sysAp as unknown as {
+      webSocket?: WebSocket;
+      webSocketKeepaliveSubscription: Subscription | undefined;
+    };
     expect(instance.webSocket).toBeUndefined();
+    expect(instance.webSocketKeepaliveSubscription).toBeUndefined();
     sysAp.connectWebSocket(true);
     expect(spy).not.toHaveBeenCalled();
     expect(instance.webSocket).toBeInstanceOf(WebSocket);
+    expect(instance.webSocketKeepaliveSubscription).toBeDefined();
+  });
+
+  it("should send ping frame when keepalive timer expires and the web socket is open", () => {
+    spyOn(WebSocket.prototype, "send");
+    const mockWebSocket = {
+      readyState: WebSocket.OPEN,
+      ping: jasmine.createSpy(),
+    };
+    const sysAp = new SystemAccessPoint(
+      "localhost",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger,
+      testScheduler
+    );
+    const instance = sysAp as unknown as {
+      webSocket?: WebSocket;
+      webSocketKeepaliveTimerReset$: Subject<void>;
+      createWebSocket: (certificateVerification: boolean) => WebSocket;
+    };
+    spyOn(instance, "createWebSocket").and.returnValue(
+      mockWebSocket as unknown as WebSocket
+    );
+    expect(instance.webSocket).toBeUndefined();
+
+    sysAp.connectWebSocket(true);
+    expect(instance.webSocket).toBeDefined();
+    expect(instance.webSocket?.readyState).toEqual(WebSocket.OPEN);
+    testScheduler.run(() => {
+      instance.webSocketKeepaliveTimerReset$.next();
+      testScheduler.maxFrames = 100_000;
+      testScheduler.flush();
+      expect(mockWebSocket.ping).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  it("should not send ping frame when keepalive timer expires and the web socket is not open", () => {
+    spyOn(WebSocket.prototype, "send");
+    const mockWebSocket = {
+      readyState: WebSocket.CLOSED,
+      ping: jasmine.createSpy(),
+    };
+    const sysAp = new SystemAccessPoint(
+      "localhost",
+      "username",
+      "password",
+      undefined,
+      undefined,
+      logger,
+      testScheduler
+    );
+    const instance = sysAp as unknown as {
+      webSocket?: WebSocket;
+      webSocketKeepaliveTimerReset$: Subject<void>;
+      createWebSocket: (certificateVerification: boolean) => WebSocket;
+    };
+    spyOn(instance, "createWebSocket").and.returnValue(
+      mockWebSocket as unknown as WebSocket
+    );
+    expect(instance.webSocket).toBeUndefined();
+
+    sysAp.connectWebSocket(true);
+    expect(instance.webSocket).toBeDefined();
+    expect(instance.webSocket?.readyState).toEqual(WebSocket.CLOSED);
+    testScheduler.run(() => {
+      instance.webSocketKeepaliveTimerReset$.next();
+      testScheduler.maxFrames = 100_000;
+      testScheduler.flush();
+      expect(mockWebSocket.ping).not.toHaveBeenCalled();
+    });
   });
 
   it("should warn if certificate verification is disabled", () => {
