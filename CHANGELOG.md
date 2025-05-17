@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://
 semver.org/spec/v2.0.0.html).
 
+## 1.6.1 - 17.05.2025
+
+### Fixed
+
+- [#77](https://github.com/pgerke/freeathome-local-api-client/issues/77):
+  Fixed an issue that caused multiple websocket keep alive timer to be configured simultaneously
+
 ## 1.6.0 - 16.05.2025
 
 ### Added

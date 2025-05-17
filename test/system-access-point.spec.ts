@@ -173,6 +173,7 @@ describe("System Access Point", () => {
 
   it("should call web socket event handlers", () => {
     spyOn(WebSocket.prototype, "send");
+    spyOn(WebSocket.prototype, "pong");
     const sysAp = new SystemAccessPoint(
       "ap",
       "username",
