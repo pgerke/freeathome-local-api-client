@@ -86,6 +86,9 @@ export class SystemAccessPoint extends EventEmitter {
     }
 
     this.webSocket = this.createWebSocket(certificateVerification);
+    // (Re-)create the web socket keepalive timer
+    this.webSocketKeepaliveSubscription?.unsubscribe();
+    this.webSocketKeepaliveSubscription = undefined;
     this.webSocketKeepaliveSubscription =
       this.webSocketKeepaliveTimer$.subscribe(() => {
         if (!(this.webSocket && this.webSocket.readyState === WebSocket.OPEN))
@@ -94,6 +97,7 @@ export class SystemAccessPoint extends EventEmitter {
         this.logger.log("keepalive timer expired, sending ping message...");
         this.webSocket.ping();
       });
+    this.webSocketKeepaliveTimerReset$.next();
   }
 
   /**
@@ -144,6 +148,9 @@ export class SystemAccessPoint extends EventEmitter {
     webSocket.on("ping", (data: Buffer) => {
       this.emit("websocket-ping", data);
       this.logger.debug("Ping received", data.toString("ascii"));
+      this.webSocketKeepaliveTimerReset$.next();
+      webSocket.pong(data);
+      this.logger.debug("Pong sent", data.toString("ascii"));
     });
     webSocket.on("pong", (data: Buffer) => {
       this.emit("websocket-pong", data);
@@ -164,6 +171,8 @@ export class SystemAccessPoint extends EventEmitter {
     webSocket.on("close", (code, reason) => {
       this.emit("websocket-close", code, reason);
       this.logger.log("Connection closed");
+      this.webSocketKeepaliveSubscription?.unsubscribe();
+      this.webSocketKeepaliveSubscription = undefined;
     });
     webSocket.on("message", (data: RawData, isBinary: boolean) => {
       this.emit("websocket-message", data, isBinary);
@@ -182,8 +191,6 @@ export class SystemAccessPoint extends EventEmitter {
       throw new Error("Web socket is not open");
     }
 
-    this.webSocketKeepaliveSubscription?.unsubscribe();
-    this.webSocketKeepaliveSubscription = undefined;
     if (force) {
       this.webSocket.terminate();
     } else {
