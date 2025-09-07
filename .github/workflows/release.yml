@@ -10,6 +10,7 @@ on:
 jobs:
   check_release_trigger:
     name: Check if PR will trigger a Release
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     outputs:
       version_changed: ${{ steps.detect_version_change.outputs.version_changed }}
