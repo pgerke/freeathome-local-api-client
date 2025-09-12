@@ -2,12 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "CommonJS",
-    "types": ["jasmine", "node"]
+    "types": ["jasmine", "node"],
+    "moduleResolution": "node"
   },
   "ts-node": {
-    "moduleTypes": {
-      "**/*": "cjs"
-    }
+    "esm": false,
+    "experimentalSpecifierResolution": "node"
   },
   "include": [
     "src",
