@@ -1,4 +1,5 @@
-import { iface, indexKey, opt, ITypeSuite } from "ts-interface-checker";
+import type { ITypeSuite } from "ts-interface-checker";
+import { iface, indexKey, opt } from "ts-interface-checker";
 
 const Device = iface([], {
   displayName: opt("string"),

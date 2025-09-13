@@ -1,4 +1,4 @@
-import { InOutPut } from "./in-out-put";
+import { type InOutPut } from "./in-out-put";
 
 /** Describes a device channel */
 export interface Channel {

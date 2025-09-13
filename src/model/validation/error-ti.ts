@@ -1,4 +1,5 @@
-import { iface, ITypeSuite } from "ts-interface-checker";
+import type { ITypeSuite } from "ts-interface-checker";
+import { iface } from "ts-interface-checker";
 
 const Error = iface([], {
   code: "string",

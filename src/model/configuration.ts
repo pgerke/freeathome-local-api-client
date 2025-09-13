@@ -1,4 +1,4 @@
-import { SysAP } from "./sys-ap";
+import { type SysAP } from "./sys-ap";
 
 /** Describes system access point configurations. */
 export interface Configuration {

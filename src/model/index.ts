@@ -1,19 +1,19 @@
-export { Channel } from "./channel";
-export { Configuration } from "./configuration";
-export { Device } from "./device";
-export { DeviceList } from "./device-list";
-export { DeviceResponse } from "./device-response";
-export { Devices } from "./devices";
-export { Error } from "./error";
-export { Floors } from "./floors";
-export { GetDataPointResponse } from "./get-data-point-response";
-export { InOutPut } from "./in-out-put";
-export { Logger } from "./logger";
-export { Rooms } from "./rooms";
-export { ScenesTriggered } from "./scenes-triggered";
-export { SetDataPointResponse } from "./set-data-point-response";
-export { SysAP } from "./sys-ap";
-export { Users } from "./users";
+export type { Channel } from "./channel";
+export type { Configuration } from "./configuration";
+export type { Device } from "./device";
+export type { DeviceList } from "./device-list";
+export type { DeviceResponse } from "./device-response";
+export type { Devices } from "./devices";
+export type { Error } from "./error";
+export type { Floors } from "./floors";
+export type { GetDataPointResponse } from "./get-data-point-response";
+export type { InOutPut } from "./in-out-put";
+export type { Logger } from "./logger";
+export type { Rooms } from "./rooms";
+export type { ScenesTriggered } from "./scenes-triggered";
+export type { SetDataPointResponse } from "./set-data-point-response";
+export type { SysAP } from "./sys-ap";
+export type { Users } from "./users";
 export {
   isChannel,
   isConfiguration,
@@ -26,6 +26,6 @@ export {
   isVirtualDeviceResponse,
   isWebSocketMessage,
 } from "./validator";
-export { VirtualDevice, VirtualDeviceType } from "./virtual-device";
-export { VirtualDeviceResponse } from "./virtual-device-response";
-export { WebSocketMessage } from "./websocket-message";
+export { type VirtualDevice, VirtualDeviceType } from "./virtual-device";
+export type { VirtualDeviceResponse } from "./virtual-device-response";
+export type { WebSocketMessage } from "./websocket-message";

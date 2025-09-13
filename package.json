@@ -33,20 +33,30 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "require": {
+        "test-cjs": "./dist/index.js",
+        "test-esm": "./dist/index.mjs",
+        "default": "./dist/index.js"
+      },
+      "import": {
+        "test-cjs": "./dist/index.js",
+        "test-esm": "./dist/index.mjs",
+        "default": "./dist/index.mjs"
+      }
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "tsup --config tsup.config.ts",
-    "test": "ts-node --project ./tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=jasmine.json",
-    "test:ci": "c8 pnpm run test",
+    "clean": "rimraf dist coverage",
+    "build": "pnpm clean && tsup --config tsup.config.ts",
+    "build:test": "pnpm clean && tsup --config tsup.test.config.ts",
+    "test:esm": "NODE_OPTIONS=\"--conditions=test-esm\" jasmine --config=jasmine.json",
+    "test:cjs": "NODE_OPTIONS=\"--conditions=test-cjs\" jasmine --config=jasmine.json",
+    "test:coverage": "pnpm build:test && c8 pnpm run test:cjs",
     "lint": "eslint . --fix --max-warnings=0",
-    "prepublishOnly": "pnpm run lint && pnpm run build"
+    "prepublishOnly": "pnpm lint && pnpm build"
   },
   "dependencies": {
     "rxjs": "^7.8.2",
@@ -58,6 +68,7 @@
     "@eslint/js": "^9.35.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@types/jasmine": "^5.1.9",
+    "@types/node": "^20.19.14",
     "@types/ws": "^8.18.1",
     "@typescript-eslint/eslint-plugin": "^8.43.0",
     "@typescript-eslint/parser": "^8.43.0",
@@ -65,7 +76,7 @@
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-n": "^17.21.3",
+    "eslint-plugin-n": "^17.22.0",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-promise": "^7.2.1",
     "globals": "^16.4.0",
@@ -79,7 +90,7 @@
     "tsup": "^8.5.0",
     "typescript": "^5.9.2"
   },
-  "packageManager": "pnpm@10.16.0+sha512.8066e7b034217b700a9a4dbb3a005061d641ba130a89915213a10b3ca4919c19c037bec8066afdc559b89635fdb806b16ea673f2468fbb28aabfa13c53e3f769",
+  "packageManager": "pnpm@10.16.1+sha512.0e155aa2629db8672b49e8475da6226aa4bdea85fdcdfdc15350874946d4f3c91faaf64cbdc4a5d1ab8002f473d5c3fcedcd197989cf0390f9badd3c04678706",
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"

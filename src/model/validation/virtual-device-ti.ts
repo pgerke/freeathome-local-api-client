@@ -1,4 +1,5 @@
-import { array, enumtype, iface, opt, ITypeSuite } from "ts-interface-checker";
+import type { ITypeSuite } from "ts-interface-checker";
+import { array, enumtype, iface, opt } from "ts-interface-checker";
 
 const VirtualDevice = iface([], {
   type: "VirtualDeviceType",

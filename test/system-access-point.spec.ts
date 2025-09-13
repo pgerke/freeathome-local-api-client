@@ -1,17 +1,18 @@
-import { Subject, Subscription } from "rxjs";
+import type { Subject, Subscription } from "rxjs";
 import { TestScheduler } from "rxjs/testing";
-import { RawData, WebSocket } from "ws";
+import type { RawData } from "ws";
+import { WebSocket } from "ws";
 import { SystemAccessPoint } from "../src";
-import {
+import type {
   Configuration,
   DeviceResponse,
   GetDataPointResponse,
   Logger,
   SetDataPointResponse,
   VirtualDeviceResponse,
-  VirtualDeviceType,
   WebSocketMessage,
 } from "../src/model";
+import { VirtualDeviceType } from "../src/model";
 import { originalTimeout } from "../test";
 
 const logger: Logger = {
@@ -350,7 +351,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint(
       "ap",
       "username",
@@ -375,7 +376,7 @@ describe("System Access Point", () => {
 
   it("should process unauthorized response", async () => {
     const response = { status: 401 } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint(
       "ap",
       "username",
@@ -402,7 +403,7 @@ describe("System Access Point", () => {
       status: 502,
       text: () => Promise.resolve("Test Error"),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint(
       "ap",
       "username",
@@ -425,7 +426,7 @@ describe("System Access Point", () => {
       status: 403,
       text: () => Promise.resolve("Test Error"),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint(
       "ap",
       "username",
@@ -461,7 +462,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(
       await sysAp.createVirtualDevice("", "", { type: VirtualDeviceType.RTC })
@@ -483,7 +484,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(await sysAp.getConfiguration()).toEqual(obj);
   });
@@ -498,7 +499,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(await sysAp.getDevice("", "")).toEqual(obj);
   });
@@ -513,7 +514,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(await sysAp.getDatapoint("", "", "", "")).toEqual(obj);
   });
@@ -529,7 +530,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(await sysAp.setDatapoint("", "", "", "", "")).toEqual(obj);
   });
@@ -544,7 +545,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(await sysAp.triggerProxyDevice("", "", "", "")).toEqual(obj);
   });
@@ -559,7 +560,7 @@ describe("System Access Point", () => {
       status: 200,
       json: () => Promise.resolve(obj),
     } as Response;
-    globalThis.fetch = jasmine.createSpy().and.resolveTo(response);
+    spyOn(globalThis, "fetch").and.resolveTo(response);
     const sysAp = new SystemAccessPoint("ap", "username", "password", false);
     expect(await sysAp.setProxyDeviceValue("", "", "", "")).toEqual(obj);
   });

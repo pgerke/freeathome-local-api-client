@@ -30,7 +30,7 @@ jobs:
       - name: Restore dependencies
         run: pnpm install --frozen-lockfile
       - name: Build for production
-        run: pnpm run build
+        run: pnpm build
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -61,7 +61,7 @@ jobs:
       - name: Restore dependencies
         run: pnpm install --frozen-lockfile
       - name: Run linter
-        run: pnpm run lint
+        run: pnpm lint
 
   audit:
     name: Audit
@@ -110,8 +110,12 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       - name: Restore dependencies
         run: pnpm install --frozen-lockfile
-      - name: Run unit test
-        run: pnpm run test:ci
+      - name: Build for test
+        run: pnpm build:test
+      - name: Run unit test (ESM)
+        run: pnpm test:esm
+      - name: Run unit test (CJS)
+        run: npx c8 pnpm test:cjs
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:

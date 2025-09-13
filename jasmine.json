@@ -1,9 +1,11 @@
 {
-  "spec_dir": "test",
-  "spec_files": ["**/*[sS]pec.ts"],
-  "helpers": ["test.ts"],
-  "env": {
-    "stopSpecOnExpectationFailure": false,
-    "random": true
-  }
+  "spec_dir": "dist",
+  "spec_files": [
+    "**/*.[sS]pec.js"
+  ],
+  "helpers": [
+    "test.ts"
+  ],
+  "random": true,
+  "stopSpecOnExpectationFailure": false
 }

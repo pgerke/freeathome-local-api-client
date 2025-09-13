@@ -1,30 +1,29 @@
 import { EventEmitter } from "events";
+import type { Observable, Subscription } from "rxjs";
 import {
   interval,
-  Observable,
-  SchedulerLike,
+  type SchedulerLike,
   Subject,
-  Subscription,
   switchMap,
   takeUntil,
 } from "rxjs";
-import { ClientOptions, RawData, WebSocket } from "ws";
+import { type ClientOptions, type RawData, WebSocket } from "ws";
 import {
-  Configuration,
-  DeviceList,
-  DeviceResponse,
-  GetDataPointResponse,
+  type Configuration,
+  type DeviceList,
+  type DeviceResponse,
+  type GetDataPointResponse,
   isConfiguration,
   isDeviceList,
   isDeviceResponse,
   isGetDataPointResponse,
   isSetDataPointResponse,
   isWebSocketMessage,
-  Logger,
-  SetDataPointResponse,
-  VirtualDevice,
-  VirtualDeviceResponse,
-  WebSocketMessage,
+  type Logger,
+  type SetDataPointResponse,
+  type VirtualDevice,
+  type VirtualDeviceResponse,
+  type WebSocketMessage,
 } from "./model";
 import { isVirtualDeviceResponse } from "./model/validator";
 
@@ -355,10 +354,10 @@ export class SystemAccessPoint extends EventEmitter {
   private async fetchDataViaRest(
     method: HttpRequestMethod,
     route: string,
-    body: BodyInit | null | undefined = undefined
+    body?: RequestInit["body"]
   ): Promise<Response> {
     // Set up request info
-    const info: RequestInfo = `${this.tlsEnabled ? "https" : "http"}://${
+    const info = `${this.tlsEnabled ? "https" : "http"}://${
       this.hostName
     }/fhapi/v1/api/rest/${route}`;
 

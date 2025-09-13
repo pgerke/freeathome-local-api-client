@@ -1,4 +1,4 @@
-import { Rooms } from "./rooms";
+import { type Rooms } from "./rooms";
 
 /** Describes the floor collection. */
 export interface Floors {
