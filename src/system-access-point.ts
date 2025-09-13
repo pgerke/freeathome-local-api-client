@@ -1,9 +1,10 @@
 import { EventEmitter } from "events";
-import type { Observable, Subscription } from "rxjs";
 import {
   interval,
+  type Observable,
   type SchedulerLike,
   Subject,
+  type Subscription,
   switchMap,
   takeUntil,
 } from "rxjs";
