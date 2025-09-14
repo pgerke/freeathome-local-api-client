@@ -1,5 +1,5 @@
-import { Devices } from "./devices";
-import { ScenesTriggered } from "./scenes-triggered";
+import { type Devices } from "./devices";
+import { type ScenesTriggered } from "./scenes-triggered";
 
 /**
  * Represents a message that was received from the System Access Point web socket.

@@ -3,8 +3,31 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://
-semver.org/spec/v2.0.0.html).
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 1.8.0 - 14.09.2025
+
+### Added
+
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Add dual module system testing support (ESM/CommonJS)
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Add separate test build configuration with tsup
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Add jasmine-spec-reporter for improved test output visibility
+
+### Changed
+
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Migrate ESLint to flat config format with latest TypeScript rules
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Update Jasmine testing framework to latest version
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Modernize TypeScript configuration with improved module resolution
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Add separate test scripts for ESM and CommonJS execution
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Update GitHub Actions workflow for dual module testing
 
 ## 1.7.0 - 23.07.2025
 

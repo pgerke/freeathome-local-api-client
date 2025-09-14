@@ -1,4 +1,5 @@
-import { iface, opt, ITypeSuite } from "ts-interface-checker";
+import type { ITypeSuite } from "ts-interface-checker";
+import { iface, opt } from "ts-interface-checker";
 
 const SysAP = iface([], {
   devices: "Devices",

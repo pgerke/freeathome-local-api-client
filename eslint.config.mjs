@@ -24,6 +24,7 @@ export default [
       "**/docs",
       "**/node_modules",
       "**/package-lock.json",
+      "**/pnpm-lock.yaml",
       "**/eslint.config.mjs",
     ],
   },
@@ -49,7 +50,7 @@ export default [
       sourceType: "module",
 
       parserOptions: {
-        project: ["./tsconfig.json", "./tsconfig.spec.json"],
+        project: ["./tsconfig.spec.json"], // Only use the spec config for ESLint
       },
     },
 
@@ -60,6 +61,11 @@ export default [
           singleQuote: false,
         },
       ],
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        { prefer: "type-imports" },
+      ],
+      "@typescript-eslint/consistent-type-exports": "error",
     },
   },
 ];

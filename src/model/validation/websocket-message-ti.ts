@@ -1,4 +1,5 @@
-import { array, iface, indexKey, ITypeSuite, opt } from "ts-interface-checker";
+import type { ITypeSuite } from "ts-interface-checker";
+import { array, iface, indexKey, opt } from "ts-interface-checker";
 
 const WebSocketMessage = iface([], {
   [indexKey]: iface([], {

@@ -1,4 +1,4 @@
-import { Devices } from "./devices";
+import { type Devices } from "./devices";
 
 /** Describes the response to a device request. */
 export interface DeviceResponse {

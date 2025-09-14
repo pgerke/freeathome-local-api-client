@@ -1,10 +1,17 @@
-import {
+import type {
   Channel,
   Configuration,
   Device,
   DeviceList,
   DeviceResponse,
   GetDataPointResponse,
+  Logger,
+  SetDataPointResponse,
+  VirtualDeviceResponse,
+  WebSocketMessage,
+  VirtualDevice,
+} from "../src/model";
+import {
   isConfiguration,
   isChannel,
   isDevice,
@@ -15,11 +22,6 @@ import {
   isVirtualDevice,
   isVirtualDeviceResponse,
   isWebSocketMessage,
-  Logger,
-  SetDataPointResponse,
-  VirtualDeviceResponse,
-  WebSocketMessage,
-  VirtualDevice,
   VirtualDeviceType,
 } from "../src/model";
 import { originalTimeout } from "../test";

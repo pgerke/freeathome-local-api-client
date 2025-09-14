@@ -18,18 +18,19 @@ import {
   VirtualDeviceTypeSuite,
   VirtualDeviceResponseTypeSuite,
 } from "./validation";
-import { Checker, createCheckers } from "ts-interface-checker";
-import { WebSocketMessage as Message } from "./websocket-message";
-import { Configuration as Config } from "./configuration";
-import { Channel as Chan } from "./channel";
-import { Device as Dev } from "./device";
-import { DeviceList as DevList } from "./device-list";
-import { DeviceResponse as DevResponse } from "./device-response";
-import { GetDataPointResponse as GetResponse } from "./get-data-point-response";
-import { SetDataPointResponse as SetResponse } from "./set-data-point-response";
-import { VirtualDeviceResponse as VDeviceResponse } from "./virtual-device-response";
-import { VirtualDevice as VDevice } from "./virtual-device";
-import { Logger } from "./logger";
+import type { Checker } from "ts-interface-checker";
+import { createCheckers } from "ts-interface-checker";
+import { type WebSocketMessage as Message } from "./websocket-message";
+import { type Configuration as Config } from "./configuration";
+import { type Channel as Chan } from "./channel";
+import { type Device as Dev } from "./device";
+import { type DeviceList as DevList } from "./device-list";
+import { type DeviceResponse as DevResponse } from "./device-response";
+import { type GetDataPointResponse as GetResponse } from "./get-data-point-response";
+import { type SetDataPointResponse as SetResponse } from "./set-data-point-response";
+import { type VirtualDeviceResponse as VDeviceResponse } from "./virtual-device-response";
+import { type VirtualDevice as VDevice } from "./virtual-device";
+import { type Logger } from "./logger";
 
 const { Channel } = createCheckers(ChannelTypeSuite, InOutPutTypeSuite);
 

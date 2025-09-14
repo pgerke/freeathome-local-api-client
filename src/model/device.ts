@@ -1,4 +1,4 @@
-import { Channel } from "./channel";
+import { type Channel } from "./channel";
 
 /** Describes a device */
 export interface Device {

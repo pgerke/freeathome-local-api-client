@@ -1,6 +1,6 @@
-import { Devices } from "./devices";
-import { Floors } from "./floors";
-import { Users } from "./users";
+import { type Devices } from "./devices";
+import { type Floors } from "./floors";
+import { type Users } from "./users";
 
 /** Describes a system access point. */
 export interface SysAP {

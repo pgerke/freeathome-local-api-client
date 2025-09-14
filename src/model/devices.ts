@@ -1,4 +1,4 @@
-import { Device } from "./device";
+import { type Device } from "./device";
 
 /** Describes a list of Devices identified by their serial. */
 export interface Devices {
