@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.9.0 - 18.10.2025
+
+### Changed
+
+- Bump dependencies
+- [#128](https://github.com/pgerke/freeathome-local-api-client/issues/128):
+  Moved to using a Trusted Publisher instead of a personal access token for library publication
+
 ## 1.8.0 - 14.09.2025
 
 ### Added
