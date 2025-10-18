@@ -1,0 +1,6 @@
+{
+  "sonarlint.connectedMode.project": {
+    "connectionId": "pgerke",
+    "projectKey": "pgerke_freeathome-local-api-client"
+  }
+}
