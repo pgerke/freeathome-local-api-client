@@ -38,6 +38,23 @@ npm install --save freeathome-local-api-client
 The client library is documented using JSDoc, the generated documentation is available at https://pgerke.github.io/freeathome-local-api-client/.
 There is also a sample project illustrating the use of the library can be found at https://github.com/pgerke/freeathome-local-api-sample. It illustrates usage for ESM as well as CommonJs.
 
+## Publishing
+
+This package uses npm Trusted Publisher authentication for secure, token-free publishing to npmjs.org. The publishing process is fully automated through GitHub Actions when a version change is detected in a merged pull request to the main branch.
+
+### How it works
+
+- The release workflow automatically publishes to npm when the version in `package.json` changes
+- Authentication uses OpenID Connect (OIDC) instead of long-lived tokens
+- Provenance statements are automatically generated for supply chain security
+- No manual npm tokens need to be managed
+
+### Requirements
+
+- npm >= 11.5.1 (automatically satisfied by using Node.js LTS)
+- GitHub Actions workflow with `id-token: write` permission
+- npm Trusted Publisher configured on npmjs.org for this package
+
 ## I found a bug, what do I do?
 
 I'm happy to hear any feedback regarding the library or it's implementation, be it critizism, praise or rants. Please create a [GitHub issue](https://github.com/pgerke/freeathome-local-api-client/issues) or drop me an [email](mailto:info@philipgerke.com) if you would like to contact me.
