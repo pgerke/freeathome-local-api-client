@@ -51,7 +51,7 @@ This package uses npm Trusted Publisher authentication for secure, token-free pu
 
 ### Requirements
 
-- npm >= 11.5.1 (automatically satisfied by using Node.js LTS)
+- npm >= 11.5.1 (the CI workflow ensures this for automated publishing; for local/manual publishing, ensure your npm version is >= 11.5.1)
 - GitHub Actions workflow with `id-token: write` permission
 - npm Trusted Publisher configured on npmjs.org for this package
 
