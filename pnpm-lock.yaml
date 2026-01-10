@@ -31,8 +31,8 @@ importers:
         specifier: ^5.1.14
         version: 5.1.14
       '@types/node':
-        specifier: ^24.10.6
-        version: 24.10.6
+        specifier: ^25.0.5
+        version: 25.0.5
       '@types/ws':
         specifier: ^8.18.1
         version: 8.18.1
@@ -86,7 +86,7 @@ importers:
         version: 9.5.4(typescript@5.9.3)(webpack@5.97.1(esbuild@0.27.2))
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@24.10.6)(typescript@5.9.3)
+        version: 10.9.2(@types/node@25.0.5)(typescript@5.9.3)
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(typescript@5.9.3)
@@ -598,8 +598,8 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/node@24.10.6':
-    resolution: {integrity: sha512-B8h60xgJMR/xmgyX9fncRzEW9gCxoJjdenUhke2v1JGOd/V66KopmWrLPXi5oUI4VuiGK+d+HlXJjDRZMj21EQ==}
+  '@types/node@25.0.5':
+    resolution: {integrity: sha512-FuLxeLuSVOqHPxSN1fkcD8DLU21gAP7nCKqGRJ/FglbCUBs0NYN6TpHcdmyLeh8C0KwGIaZQJSv+OYG+KZz+Gw==}
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
@@ -2898,13 +2898,13 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/node@24.10.6':
+  '@types/node@25.0.5':
     dependencies:
       undici-types: 7.16.0
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 24.10.6
+      '@types/node': 25.0.5
 
   '@typescript-eslint/eslint-plugin@8.52.0(@typescript-eslint/parser@8.52.0(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3)':
     dependencies:
@@ -4108,7 +4108,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 24.10.6
+      '@types/node': 25.0.5
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -4810,14 +4810,14 @@ snapshots:
       typescript: 5.9.3
       webpack: 5.97.1(esbuild@0.27.2)
 
-  ts-node@10.9.2(@types/node@24.10.6)(typescript@5.9.3):
+  ts-node@10.9.2(@types/node@25.0.5)(typescript@5.9.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.12
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 24.10.6
+      '@types/node': 25.0.5
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
