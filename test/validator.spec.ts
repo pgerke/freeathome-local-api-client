@@ -355,7 +355,7 @@ describe("Validator", () => {
     expect(isChannel(obj, logger)).toBeFalse();
   });
 
-  it("should throw an error during verification for an invalid virtual device response in verbose mode", () => {
+  it("should throw an error during verification for an invalid channel in verbose mode", () => {
     const spy = spyOn(console, "error");
     const obj = {
       displayName: "Test Channel",
@@ -376,7 +376,7 @@ describe("Validator", () => {
     expect(isDevice(obj, logger, true)).toBeTrue();
   });
 
-  it("should fail verification for an invalid channel", () => {
+  it("should fail verification for an invalid device", () => {
     const obj = {
       displayName: "Test Device",
       floor: 1,
@@ -384,7 +384,7 @@ describe("Validator", () => {
     expect(isDevice(obj, logger)).toBeFalse();
   });
 
-  it("should throw an error during verification for an invalid virtual device response in verbose mode", () => {
+  it("should throw an error during verification for an invalid device in verbose mode", () => {
     const spy = spyOn(console, "error");
     const obj = {
       displayName: "Test Device",
